@@ -2,8 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-// Define terrain types with rare resources
-type TerrainType = 'tree' | 'volcano' | 'water' | 'sand' | 'mountain' | 'grass';
+type TerrainType = 'tree' | 'volcano' | 'water' | 'sand' | 'mountain' | 'grass' | 'cave' | 'swamp';
 
 interface Terrain {
   name: string;
@@ -11,8 +10,10 @@ interface Terrain {
   count: number;
   resource: string;
   rareResource: string;
+  epicResource: string;
   collected: number;
   rareCollected: number;
+  epicCollected: number;
   maxCollection: number;
 }
 
@@ -29,6 +30,18 @@ interface Inventory {
   Copper: number;
   Gem: number;
   Honey: number;
+  Resin: number;
+  Ruby: number;
+  Coral: number;
+  Silver: number;
+  Iron: number;
+  Emerald: number;
+  Coal: number;
+  Herbs: number;
+  Crystal: number;
+  Moss: number;
+  Mushrooms: number;
+  Frogs: number;
 }
 
 interface PixelCooldown {
@@ -44,8 +57,10 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     count: 0, 
     resource: 'Wood', 
     rareResource: 'Honey',
+    epicResource: 'Resin',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
   volcano: { 
@@ -53,9 +68,11 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     color: '#FF3300', 
     count: 0, 
     resource: 'Obsidian', 
-    rareResource: 'Diamond',
+    rareResource: 'Ruby',
+    epicResource: 'Diamond',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
   water: { 
@@ -64,8 +81,10 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     count: 0, 
     resource: 'Fish', 
     rareResource: 'Pearl',
+    epicResource: 'Coral',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
   sand: { 
@@ -73,9 +92,11 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     color: '#FFEE44', 
     count: 0, 
     resource: 'Glass', 
-    rareResource: 'Gold',
+    rareResource: 'Silver',
+    epicResource: 'Gold',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
   mountain: { 
@@ -83,9 +104,11 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     color: '#888888', 
     count: 0, 
     resource: 'Stone', 
-    rareResource: 'Gem',
+    rareResource: 'Iron',
+    epicResource: 'Gem',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
   grass: { 
@@ -93,26 +116,64 @@ const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
     color: '#88FF88', 
     count: 0, 
     resource: 'Wheat', 
-    rareResource: 'Copper',
+    rareResource: 'Herbs',
+    epicResource: 'Copper',
     collected: 0, 
     rareCollected: 0,
+    epicCollected: 0,
+    maxCollection: 0 
+  },
+  cave: { 
+    name: 'Cave', 
+    color: '#444444', 
+    count: 0, 
+    resource: 'Coal', 
+    rareResource: 'Emerald',
+    epicResource: 'Crystal',
+    collected: 0, 
+    rareCollected: 0,
+    epicCollected: 0,
+    maxCollection: 0 
+  },
+  swamp: { 
+    name: 'Swamp', 
+    color: '#556B2F', 
+    count: 0, 
+    resource: 'Moss', 
+    rareResource: 'Mushrooms',
+    epicResource: 'Frogs',
+    collected: 0, 
+    rareCollected: 0,
+    epicCollected: 0,
     maxCollection: 0 
   },
 };
 
 const INITIAL_INVENTORY: Inventory = {
   Wood: 0,
+  Honey: 0,
+  Resin: 0,
   Obsidian: 0,
-  Fish: 0,
-  Glass: 0,
-  Stone: 0,
-  Wheat: 0,
-  Pearl: 0,
+  Ruby: 0,
   Diamond: 0,
+  Fish: 0,
+  Pearl: 0,
+  Coral: 0,
+  Glass: 0,
+  Silver: 0,
   Gold: 0,
-  Copper: 0,
+  Stone: 0,
+  Iron: 0,
   Gem: 0,
-  Honey: 0
+  Wheat: 0,
+  Herbs: 0,
+  Copper: 0,
+  Coal: 0,
+  Emerald: 0,
+  Crystal: 0,
+  Moss: 0,
+  Mushrooms: 0,
+  Frogs: 0
 };
 
 // Improved cellular automata function for terrain generation
@@ -251,7 +312,9 @@ export default function PixelMapGame() {
     water: { ...TERRAIN_TYPES.water, count: 0, collected: 0, maxCollection: 0 },
     sand: { ...TERRAIN_TYPES.sand, count: 0, collected: 0, maxCollection: 0 },
     mountain: { ...TERRAIN_TYPES.mountain, count: 0, collected: 0, maxCollection: 0 },
-    grass: { ...TERRAIN_TYPES.grass, count: 0, collected: 0, maxCollection: 0 }
+    grass: { ...TERRAIN_TYPES.grass, count: 0, collected: 0, maxCollection: 0 },
+    cave: { ...TERRAIN_TYPES.cave, count: 0, collected: 0, maxCollection: 0 },
+    swamp: { ...TERRAIN_TYPES.swamp, count: 0, collected: 0, maxCollection: 0 }
   });
   const [inventory, setInventory] = useState<Inventory>(INITIAL_INVENTORY);
   const [pixelCooldowns, setPixelCooldowns] = useState<PixelCooldown[]>([]);
@@ -497,19 +560,30 @@ export default function PixelMapGame() {
         { x: pixelX, y: pixelY, cooldownUntil }
       ]);
       
-      // Determine if we get a rare resource (5/100 chance)
-      const isRare = Math.random() < 0.05;
-      const resourceType = isRare 
-        ? TERRAIN_TYPES[terrainType].rareResource as keyof Inventory
-        : TERRAIN_TYPES[terrainType].resource as keyof Inventory;
+      // Determine which resource to get (common 94%, rare 5%, epic 1%)
+      const random = Math.random();
+      let resourceType: keyof Inventory;
+      let isRare = false;
+      let isEpic = false;
+      
+      if (random < 0.01) { // 1% chance for epic
+        resourceType = TERRAIN_TYPES[terrainType].epicResource as keyof Inventory;
+        isEpic = true;
+      } else if (random < 0.06) { // 5% chance for rare
+        resourceType = TERRAIN_TYPES[terrainType].rareResource as keyof Inventory;
+        isRare = true;
+      } else { // 94% chance for common
+        resourceType = TERRAIN_TYPES[terrainType].resource as keyof Inventory;
+      }
       
       // Update collected count for this terrain type and add to persistent inventory
       setTerrainCounts(prev => ({
         ...prev,
         [terrainType]: {
           ...prev[terrainType],
-          collected: isRare ? prev[terrainType].collected : prev[terrainType].collected + 1,
-          rareCollected: isRare ? prev[terrainType].rareCollected + 1 : prev[terrainType].rareCollected
+          collected: (!isRare && !isEpic) ? prev[terrainType].collected + 1 : prev[terrainType].collected,
+          rareCollected: isRare ? prev[terrainType].rareCollected + 1 : prev[terrainType].rareCollected,
+          epicCollected: isEpic ? prev[terrainType].epicCollected + 1 : prev[terrainType].epicCollected
         }
       }));
       
@@ -530,15 +604,17 @@ export default function PixelMapGame() {
       .fill(null)
       .map(() => Array(32).fill('grass'));
     
-    // Add seeds for different terrain types with better balance
-    newPixels = createSeeds(newPixels, 'water', 3);
-    newPixels = createSeeds(newPixels, 'mountain', 8);
-    newPixels = createSeeds(newPixels, 'tree', 12);
-    newPixels = createSeeds(newPixels, 'volcano', 4);
-    newPixels = createSeeds(newPixels, 'sand', 6);
+      // Add seeds for different terrain types with better balance
+      newPixels = createSeeds(newPixels, 'water', 3);
+      newPixels = createSeeds(newPixels, 'mountain', 8);
+      newPixels = createSeeds(newPixels, 'tree', 12);
+      newPixels = createSeeds(newPixels, 'volcano', 4);
+      newPixels = createSeeds(newPixels, 'sand', 6);
+      newPixels = createSeeds(newPixels, 'cave', 5);
+      newPixels = createSeeds(newPixels, 'swamp', 7);
     
     // Apply cellular automata to create grouped terrain
-    
+  
     // Create rivers (less aggressive)
     newPixels = createRivers(newPixels);
     
@@ -553,6 +629,12 @@ export default function PixelMapGame() {
     
     // Volcano should form smaller areas
     newPixels = generateTerrain(newPixels, 'volcano', 3, 2);
+    
+    // Caves should form near mountains
+    newPixels = generateTerrain(newPixels, 'cave', 3, 2);
+    
+    // Swamps should form near water
+    newPixels = generateTerrain(newPixels, 'swamp', 3, 2);
     
     // Sand should form beaches near water
     const height = newPixels.length;
@@ -724,8 +806,7 @@ export default function PixelMapGame() {
           
           <div className="w-full md:w-80">           
           
-            <div className="mb-6 max-h-120 overflow-y-auto">
-              <h2 className="text-lg font-semibold text-green-800 mb-2">Current Map Resources</h2>
+            <div className="mb-6 max-h-150 overflow-y-auto">
 
               {/* Outer card container */}
               <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -747,7 +828,7 @@ export default function PixelMapGame() {
                         <div>
                           <div className="text-gray-700 font-medium">{terrain.name}</div>
                           <div className="text-xs text-gray-500">
-                            Collects: {terrain.resource} / {terrain.rareResource}
+                            Collects: {terrain.resource} / {terrain.rareResource} / {terrain.epicResource}
                           </div>
                         </div>
                       </div>
@@ -774,9 +855,12 @@ export default function PixelMapGame() {
               Reset
             </button>
           </div>
-          <div className="space-y-2">
+          <div className="grid grid-cols-3 gap-2">
             {Object.entries(inventory).map(([resource, count]) => (
-              <div key={resource} className="flex justify-between items-center">
+              <div 
+                key={resource} 
+                className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
+              >
                 <span className="text-blue-700">{resource}:</span>
                 <span className="font-bold text-blue-900">{count}</span>
               </div>
