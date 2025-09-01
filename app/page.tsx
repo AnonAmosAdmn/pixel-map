@@ -1268,7 +1268,13 @@ export default function PixelMapGame() {
             <div>
               <h2 className="text-lg font-semibold text-blue-800 mb-2">Crafting</h2>
               <div className="grid grid-cols-2 gap-3">
-                {CRAFTING_RECIPES.map((recipe, idx) => (
+                {CRAFTING_RECIPES.filter(recipe => {
+                  // Only show recipes that the player can craft
+                  return Object.entries(recipe.inputs).every(
+                    ([resource, required]) => 
+                      (inventory[resource as keyof Inventory] || 0) >= required
+                  );
+                }).map((recipe, idx) => (
                   <div
                     key={idx}
                     className="bg-white p-2 rounded shadow-sm flex flex-col items-center"
