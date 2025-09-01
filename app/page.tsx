@@ -42,13 +42,61 @@ interface Inventory {
   Moss: number;
   Mushrooms: number;
   Frogs: number;
-  Axe: number;
   Pickaxe: number;
-  Sword: number;
   Potion: number;
-  Crown: number;
-  Amulet: number;
-  Staff: number;
+  Axe: number;
+  FishingRod: number;
+  Torch: number;
+  Planks: number;
+  StoneBricks: number;
+  CopperIngot: number;
+  IronIngot: number;
+  GoldIngot: number;
+  SilverIngot: number;
+  ObsidianShard: number;
+  PolishedDiamond: number;
+  PolishedRuby: number;
+  PolishedEmerald: number;
+  CrystalShard: number;
+  GemCluster: number;
+  Bread: number;
+  CookedFish: number;
+  Stew: number;
+  HealingSyrup: number;
+  HoneyCake: number;
+  FrogLegs: number;
+  HealingPotion: number;
+  ManaPotion: number;
+  StaminaPotion: number;
+  WaterBreathingPotion: number;
+  InvisibilityPotion: number;
+  FireResistancePotion: number;
+  JumpBoostPotion: number;
+  DiamondRing: number;
+  PearlNecklace: number;
+  RubyPendant: number;
+  EmeraldEarring: number;
+  CoralCirclet: number;
+  IronSword: number;
+  GoldDagger: number;
+  DiamondPickaxe: number;
+  ObsidianBlade: number;
+  CrystalWand: number;
+  OceanAmulet: number;
+  ForestTalisman: number;
+  VolcanicGauntlet: number;
+  RoyalScepter: number;
+  ArtisanLens: number;
+  CraftingTable: number;
+  StoneFurnace: number;
+  ReinforcedWindow: number;
+  WoodenChest: number;
+  MetalChest: number;
+  Bow: number;
+  Arrow: number;
+  Waterskin: number;
+  EnchantedScroll: number;
+  Spyglass: number;
 }
 
 interface PixelCooldown {
@@ -63,21 +111,170 @@ interface Recipe {
   amount: number;             // how many produced
 }
 
+// Define item values for selling
+const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
+  // Basic Resources
+  Wood: 1,
+  Stone: 2,
+  Copper: 3,
+  Iron: 5,
+  Silver: 8,
+  Gold: 12,
+  Coal: 2,
+  Glass: 3,
+  Obsidian: 6,
+  Fish: 4,
+  Wheat: 2,
+  Herbs: 3,
+  Honey: 5,
+  Resin: 4,
+  Moss: 2,
+  Mushrooms: 3,
+  Frogs: 4,
+  
+  // Rare Resources
+  Pearl: 15,
+  Diamond: 25,
+  Ruby: 20,
+  Emerald: 18,
+  Coral: 12,
+  Gem: 10,
+  Crystal: 8,
+  
+  // Processed Materials
+  Planks: 3,
+  StoneBricks: 5,
+  CopperIngot: 10,
+  IronIngot: 15,
+  GoldIngot: 25,
+  SilverIngot: 20,
+  ObsidianShard: 15,
+  PolishedDiamond: 40,
+  PolishedRuby: 35,
+  PolishedEmerald: 30,
+  CrystalShard: 12,
+  GemCluster: 25,
+  
+  // Food & Consumables
+  Bread: 6,
+  CookedFish: 10,
+  Stew: 12,
+  HealingSyrup: 15,
+  HoneyCake: 18,
+  FrogLegs: 12,
+  HealingPotion: 20,
+  ManaPotion: 25,
+  StaminaPotion: 22,
+  WaterBreathingPotion: 30,
+  InvisibilityPotion: 35,
+  FireResistancePotion: 28,
+  JumpBoostPotion: 25,
+  
+  // Tools & Equipment
+  Pickaxe: 15,
+  Axe: 12,
+  FishingRod: 18,
+  Torch: 5,
+  IronSword: 30,
+  GoldDagger: 35,
+  DiamondPickaxe: 60,
+  ObsidianBlade: 45,
+  CrystalWand: 40,
+  Bow: 25,
+  Arrow: 2,
+  Waterskin: 10,
+  Spyglass: 35,
+  
+  // Jewelry & Decorative
+  DiamondRing: 75,
+  PearlNecklace: 65,
+  RubyPendant: 70,
+  EmeraldEarring: 60,
+  CoralCirclet: 55,
+  
+  // Special Items
+  OceanAmulet: 100,
+  ForestTalisman: 90,
+  VolcanicGauntlet: 110,
+  RoyalScepter: 150,
+  ArtisanLens: 85,
+  EnchantedScroll: 95,
+  
+  // Building Blocks
+  CraftingTable: 25,
+  StoneFurnace: 35,
+  ReinforcedWindow: 40,
+  WoodenChest: 20,
+  MetalChest: 45,
+};
+
 const CRAFTING_RECIPES: Recipe[] = [
-  // Basic Tools
-  { inputs: { Wood: 2, Stone: 1 }, output: "Axe", amount: 1 },
-  { inputs: { Wood: 1, Iron: 2 }, output: "Pickaxe", amount: 1 },
-  { inputs: { Wood: 1, Obsidian: 1 }, output: "Sword", amount: 1 },
-
-  // Consumables
-  { inputs: { Herbs: 2, Mushrooms: 1 }, output: "Potion", amount: 1 },
-
-  // Jewelry / Prestige
-  { inputs: { Gold: 2, Diamond: 1 }, output: "Crown", amount: 1 },
-  { inputs: { Silver: 1, Emerald: 1 }, output: "Amulet", amount: 1 },
-
-  // Magic
-  { inputs: { Crystal: 1, Resin: 1, Wood: 1 }, output: "Staff", amount: 1 },
+  // BASIC TOOLS & EQUIPMENT
+  { inputs: { Wood: 2, Stone: 1 }, output: "Pickaxe", amount: 1 },
+  { inputs: { Wood: 1, Stone: 1 }, output: "Axe", amount: 1 },
+  { inputs: { Wood: 2, Iron: 1 }, output: "FishingRod", amount: 1 },
+  { inputs: { Wood: 3, Resin: 2 }, output: "Torch", amount: 4 },
+  
+  // BUILDING MATERIALS
+  { inputs: { Wood: 4 }, output: "Planks", amount: 4 },
+  { inputs: { Stone: 2 }, output: "StoneBricks", amount: 1 },
+  
+  // METAL PROCESSING
+  { inputs: { Copper: 3, Coal: 1 }, output: "CopperIngot", amount: 1 },
+  { inputs: { Iron: 3, Coal: 1 }, output: "IronIngot", amount: 1 },
+  { inputs: { Gold: 3, Coal: 1 }, output: "GoldIngot", amount: 1 },
+  { inputs: { Silver: 3, Coal: 1 }, output: "SilverIngot", amount: 1 },
+  { inputs: { Obsidian: 2, Coal: 2 }, output: "ObsidianShard", amount: 1 },
+  
+  // GEM PROCESSING
+  { inputs: { Diamond: 1 }, output: "PolishedDiamond", amount: 1 },
+  { inputs: { Ruby: 1 }, output: "PolishedRuby", amount: 1 },
+  { inputs: { Emerald: 1 }, output: "PolishedEmerald", amount: 1 },
+  { inputs: { Crystal: 2 }, output: "CrystalShard", amount: 4 },
+  { inputs: { Gem: 3 }, output: "GemCluster", amount: 1 },
+  
+  // FOOD & CONSUMABLES
+  { inputs: { Wheat: 3 }, output: "Bread", amount: 1 },
+  { inputs: { Fish: 1, Herbs: 1 }, output: "CookedFish", amount: 1 },
+  { inputs: { Mushrooms: 2, Herbs: 1 }, output: "Stew", amount: 1 },
+  { inputs: { Honey: 2, Herbs: 1 }, output: "HealingSyrup", amount: 1 },
+  { inputs: { Wheat: 1, Honey: 1 }, output: "HoneyCake", amount: 2 },
+  { inputs: { Frogs: 2, Herbs: 1 }, output: "FrogLegs", amount: 2 },
+  
+  // POTIONS & ALCHEMY
+  { inputs: { Mushrooms: 2, Crystal: 1 }, output: "ManaPotion", amount: 1 },
+  { inputs: { Honey: 1, Resin: 1, Herbs: 1 }, output: "StaminaPotion", amount: 1 },
+  { inputs: { Coral: 1, Pearl: 1 }, output: "WaterBreathingPotion", amount: 1 },
+  { inputs: { Emerald: 1, Moss: 2 }, output: "InvisibilityPotion", amount: 1 },
+  { inputs: { Ruby: 1, Coal: 2 }, output: "FireResistancePotion", amount: 1 },
+  
+  // JEWELRY & DECORATIVE
+  { inputs: { GoldIngot: 2, Diamond: 1 }, output: "DiamondRing", amount: 1 },
+  { inputs: { SilverIngot: 2, Pearl: 1 }, output: "PearlNecklace", amount: 1 },
+  { inputs: { GoldIngot: 1, Ruby: 1 }, output: "RubyPendant", amount: 1 },
+  { inputs: { SilverIngot: 1, Emerald: 1 }, output: "EmeraldEarring", amount: 2 },
+  
+  // ADVANCED TOOLS & WEAPONS
+  { inputs: { IronIngot: 2, Wood: 2 }, output: "IronSword", amount: 1 },
+  { inputs: { GoldIngot: 2, Wood: 1 }, output: "GoldDagger", amount: 1 },
+  { inputs: { Diamond: 1, IronIngot: 2 }, output: "DiamondPickaxe", amount: 1 },
+  { inputs: { ObsidianShard: 2, IronIngot: 1 }, output: "ObsidianBlade", amount: 1 },
+  { inputs: { CrystalShard: 3, SilverIngot: 1 }, output: "CrystalWand", amount: 1 },
+  
+  // SPECIAL ITEMS
+  { inputs: { Pearl: 3, Coral: 2, GoldIngot: 1 }, output: "OceanAmulet", amount: 1 },
+  { inputs: { Emerald: 2, Moss: 3, Wood: 2 }, output: "ForestTalisman", amount: 1 },
+  { inputs: { Ruby: 2, Coal: 3, IronIngot: 2 }, output: "VolcanicGauntlet", amount: 1 },
+  { inputs: { Diamond: 3, Crystal: 2, GoldIngot: 3 }, output: "RoyalScepter", amount: 1 },
+  { inputs: { GemCluster: 1, SilverIngot: 2, Resin: 2 }, output: "ArtisanLens", amount: 1 },
+  
+  // BUILDING BLOCKS
+  { inputs: { Planks: 4 }, output: "CraftingTable", amount: 1 },
+  { inputs: { StoneBricks: 8 }, output: "StoneFurnace", amount: 1 },
+  { inputs: { IronIngot: 5, Glass: 3 }, output: "ReinforcedWindow", amount: 1 },
+  { inputs: { Wood: 3, Resin: 1 }, output: "WoodenChest", amount: 1 },
+  { inputs: { IronIngot: 4, GoldIngot: 1 }, output: "MetalChest", amount: 1 },
+  { inputs: { Glass: 1, GoldIngot: 1 }, output: "Spyglass", amount: 1 }
 ];
 
 const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
@@ -204,13 +401,61 @@ const INITIAL_INVENTORY: Inventory = {
   Moss: 0,
   Mushrooms: 0,
   Frogs: 0,
-  Axe: 0,
   Pickaxe: 0,
-  Sword: 0,
   Potion: 0,
-  Crown: 0,
-  Amulet: 0,
-  Staff: 0
+  Axe: 0,
+  FishingRod: 0,
+  Torch: 0,
+  Planks: 0,
+  StoneBricks: 0,
+  CopperIngot: 0,
+  IronIngot: 0,
+  GoldIngot: 0,
+  SilverIngot: 0,
+  ObsidianShard: 0,
+  PolishedDiamond: 0,
+  PolishedRuby: 0,
+  PolishedEmerald: 0,
+  CrystalShard: 0,
+  GemCluster: 0,
+  Bread: 0,
+  CookedFish: 0,
+  Stew: 0,
+  HealingSyrup: 0,
+  HoneyCake: 0,
+  FrogLegs: 0,
+  HealingPotion: 0,
+  ManaPotion: 0,
+  StaminaPotion: 0,
+  WaterBreathingPotion: 0,
+  InvisibilityPotion: 0,
+  FireResistancePotion: 0,
+  JumpBoostPotion: 0,
+  DiamondRing: 0,
+  PearlNecklace: 0,
+  RubyPendant: 0,
+  EmeraldEarring: 0,
+  CoralCirclet: 0,
+  IronSword: 0,
+  GoldDagger: 0,
+  DiamondPickaxe: 0,
+  ObsidianBlade: 0,
+  CrystalWand: 0,
+  OceanAmulet: 0,
+  ForestTalisman: 0,
+  VolcanicGauntlet: 0,
+  RoyalScepter: 0,
+  ArtisanLens: 0,
+  CraftingTable: 0,
+  StoneFurnace: 0,
+  ReinforcedWindow: 0,
+  WoodenChest: 0,
+  MetalChest: 0,
+  Bow: 0,
+  Arrow: 0,
+  Waterskin: 0,
+  EnchantedScroll: 0,
+  Spyglass: 0
 };
 
 // Improved cellular automata function for terrain generation
@@ -357,12 +602,15 @@ export default function PixelMapGame() {
   const [pixelCooldowns, setPixelCooldowns] = useState<PixelCooldown[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hoveredPixel, setHoveredPixel] = useState<{x: number, y: number} | null>(null);
-  const [activeTab, setActiveTab] = useState<"inventory" | "crafting">("inventory");
+  const [activeTab, setActiveTab] = useState<"inventory" | "crafting" | "selling">("inventory");
+  const [gold, setGold] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Load inventory from localStorage on component mount
+  // Load inventory and gold from localStorage on component mount
   useEffect(() => {
     const savedInventory = localStorage.getItem('pixelMapInventory');
+    const savedGold = localStorage.getItem('pixelMapGold');
+    
     if (savedInventory) {
       try {
         const parsedInventory = JSON.parse(savedInventory);
@@ -380,12 +628,22 @@ export default function PixelMapGame() {
         setInventory(INITIAL_INVENTORY);
       }
     }
+    
+    if (savedGold) {
+      try {
+        setGold(parseInt(savedGold));
+      } catch (e) {
+        console.error('Failed to parse saved gold:', e);
+        setGold(0);
+      }
+    }
   }, []);
 
-  // Save inventory to localStorage whenever it changes
+  // Save inventory and gold to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('pixelMapInventory', JSON.stringify(inventory));
-  }, [inventory]);
+    localStorage.setItem('pixelMapGold', gold.toString());
+  }, [inventory, gold]);
 
   // Initialize the pixel grid
   useEffect(() => {
@@ -772,6 +1030,7 @@ export default function PixelMapGame() {
   const resetInventory = () => {
     if (confirm('Are you sure you want to reset your inventory? This cannot be undone.')) {
       setInventory(INITIAL_INVENTORY);
+      setGold(0);
     }
   };
 
@@ -807,6 +1066,32 @@ export default function PixelMapGame() {
 
     setInventory(newInventory);
   }
+
+  // Sell items for gold
+  const sellItem = (item: keyof Inventory, amount: number) => {
+    const value = ITEM_VALUES[item] || 0;
+    
+    if (value === 0) {
+      alert("This item cannot be sold.");
+      return;
+    }
+    
+    if (inventory[item] < amount) {
+      alert(`You don't have enough ${item} to sell.`);
+      return;
+    }
+    
+    const totalValue = value * amount;
+    
+    setInventory(prev => ({
+      ...prev,
+      [item]: prev[item] - amount
+    }));
+    
+    setGold(prev => prev + totalValue);
+    
+    alert(`Sold ${amount}x ${item} for ${totalValue} gold!`);
+  };
 
 
   return (
@@ -933,6 +1218,21 @@ export default function PixelMapGame() {
             >
               Crafting
             </button>
+            <button
+              onClick={() => setActiveTab("selling")}
+              className={`px-3 py-1 rounded ${
+                activeTab === "selling"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600 border border-blue-300"
+              }`}
+            >
+              Selling
+            </button>
+          </div>
+
+          {/* Gold display */}
+          <div className="mb-4 p-2 bg-yellow-100 border border-yellow-300 rounded text-center">
+            <span className="font-bold text-yellow-700">Gold: {gold}</span>
           </div>
 
           {/* Inventory tab */}
@@ -947,16 +1247,18 @@ export default function PixelMapGame() {
                   Reset
                 </button>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                {Object.entries(inventory).map(([resource, count]) => (
-                  <div
-                    key={resource}
-                    className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
-                  >
-                    <span className="text-blue-700">{resource}:</span>
-                    <span className="font-bold text-blue-900">{count}</span>
-                  </div>
-                ))}
+              <div className="grid grid-cols-4 gap-2">
+                {Object.entries(inventory)
+                  .filter(([_, count]) => count > 0) // ✅ only show if count > 0
+                  .map(([resource, count]) => (
+                    <div
+                      key={resource}
+                      className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
+                    >
+                      <span className="text-blue-700">{resource}:</span>
+                      <span className="font-bold text-blue-900">{count}</span>
+                    </div>
+                  ))}
               </div>
             </>
           )}
@@ -987,6 +1289,52 @@ export default function PixelMapGame() {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Selling tab */}
+          {activeTab === "selling" && (
+            <div>
+              <h2 className="text-lg font-semibold text-blue-800 mb-2">Sell Items</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {Object.entries(inventory)
+                  .filter(([item, count]) => count > 0 && ITEM_VALUES[item as keyof Inventory] !== undefined)
+                  .map(([item, count]) => {
+                    const value = ITEM_VALUES[item as keyof Inventory] || 0;
+                    
+                    return (
+                      <div
+                        key={item}
+                        className="bg-white p-2 rounded shadow-sm flex flex-col items-center"
+                      >
+                        <span className="font-bold text-blue-900">{item}</span>
+                        <span className="text-blue-700">Value: {value} gold</span>
+                        <span className="text-blue-700">You have: {count}</span>
+                        
+                        <div className="flex space-x-1 mt-2">
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 1)}
+                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
+                          >
+                            Sell 1
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 5)}
+                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
+                          >
+                            Sell 5
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, count)}
+                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
+                          >
+                            Sell All
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           )}
