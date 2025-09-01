@@ -42,6 +42,13 @@ interface Inventory {
   Moss: number;
   Mushrooms: number;
   Frogs: number;
+  Axe: number;
+  Pickaxe: number;
+  Sword: number;
+  Potion: number;
+  Crown: number;
+  Amulet: number;
+  Staff: number;
 }
 
 interface PixelCooldown {
@@ -49,6 +56,29 @@ interface PixelCooldown {
   y: number;
   cooldownUntil: number;
 }
+
+interface Recipe {
+  inputs: Partial<Inventory>; // required resources
+  output: keyof Inventory;    // crafted item
+  amount: number;             // how many produced
+}
+
+const CRAFTING_RECIPES: Recipe[] = [
+  // Basic Tools
+  { inputs: { Wood: 2, Stone: 1 }, output: "Axe", amount: 1 },
+  { inputs: { Wood: 1, Iron: 2 }, output: "Pickaxe", amount: 1 },
+  { inputs: { Wood: 1, Obsidian: 1 }, output: "Sword", amount: 1 },
+
+  // Consumables
+  { inputs: { Herbs: 2, Mushrooms: 1 }, output: "Potion", amount: 1 },
+
+  // Jewelry / Prestige
+  { inputs: { Gold: 2, Diamond: 1 }, output: "Crown", amount: 1 },
+  { inputs: { Silver: 1, Emerald: 1 }, output: "Amulet", amount: 1 },
+
+  // Magic
+  { inputs: { Crystal: 1, Resin: 1, Wood: 1 }, output: "Staff", amount: 1 },
+];
 
 const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
   tree: { 
@@ -173,7 +203,14 @@ const INITIAL_INVENTORY: Inventory = {
   Crystal: 0,
   Moss: 0,
   Mushrooms: 0,
-  Frogs: 0
+  Frogs: 0,
+  Axe: 0,
+  Pickaxe: 0,
+  Sword: 0,
+  Potion: 0,
+  Crown: 0,
+  Amulet: 0,
+  Staff: 0
 };
 
 // Improved cellular automata function for terrain generation
@@ -320,6 +357,7 @@ export default function PixelMapGame() {
   const [pixelCooldowns, setPixelCooldowns] = useState<PixelCooldown[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hoveredPixel, setHoveredPixel] = useState<{x: number, y: number} | null>(null);
+  const [activeTab, setActiveTab] = useState<"inventory" | "crafting">("inventory");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load inventory from localStorage on component mount
@@ -744,6 +782,33 @@ export default function PixelMapGame() {
     );
   };
 
+  function craftItem(
+    recipe: Recipe,
+    inventory: Inventory,
+    setInventory: (inv: Inventory) => void
+  ) {
+    // Check requirements
+    for (const [resource, required] of Object.entries(recipe.inputs)) {
+      if ((inventory[resource as keyof Inventory] || 0) < required) {
+        alert(`Not enough ${resource} to craft ${recipe.output}`);
+        return;
+      }
+    }
+
+    // Deduct resources
+    const newInventory = { ...inventory };
+    for (const [resource, required] of Object.entries(recipe.inputs)) {
+      newInventory[resource as keyof Inventory] -= required;
+    }
+
+    // Add crafted item
+    newInventory[recipe.output] =
+      (newInventory[recipe.output] || 0) + recipe.amount;
+
+    setInventory(newInventory);
+  }
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
@@ -846,26 +911,86 @@ export default function PixelMapGame() {
         </div>
 
         <div className="bg-blue-50 p-4 rounded-lg mt-4 mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-lg font-semibold text-blue-800">Inventory</h2>
-            <button 
-              onClick={resetInventory}
-              className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+          {/* Tab buttons */}
+          <div className="flex space-x-2 mb-4">
+            <button
+              onClick={() => setActiveTab("inventory")}
+              className={`px-3 py-1 rounded ${
+                activeTab === "inventory"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600 border border-blue-300"
+              }`}
             >
-              Reset
+              Inventory
+            </button>
+            <button
+              onClick={() => setActiveTab("crafting")}
+              className={`px-3 py-1 rounded ${
+                activeTab === "crafting"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600 border border-blue-300"
+              }`}
+            >
+              Crafting
             </button>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {Object.entries(inventory).map(([resource, count]) => (
-              <div 
-                key={resource} 
-                className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
-              >
-                <span className="text-blue-700">{resource}:</span>
-                <span className="font-bold text-blue-900">{count}</span>
+
+          {/* Inventory tab */}
+          {activeTab === "inventory" && (
+            <>
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-lg font-semibold text-blue-800">Inventory</h2>
+                <button
+                  onClick={resetInventory}
+                  className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                >
+                  Reset
+                </button>
               </div>
-            ))}
-          </div>
+              <div className="grid grid-cols-3 gap-2">
+                {Object.entries(inventory).map(([resource, count]) => (
+                  <div
+                    key={resource}
+                    className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
+                  >
+                    <span className="text-blue-700">{resource}:</span>
+                    <span className="font-bold text-blue-900">{count}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Crafting tab */}
+          {activeTab === "crafting" && (
+            <div>
+              <h2 className="text-lg font-semibold text-blue-800 mb-2">Crafting</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {CRAFTING_RECIPES.map((recipe, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white p-2 rounded shadow-sm flex flex-col items-center"
+                  >
+                    <span className="text-blue-700">
+                      {Object.entries(recipe.inputs)
+                        .map(([res, qty]) => `${qty}x ${res}`)
+                        .join(" + ")}
+                    </span>
+                    <span className="font-bold text-blue-900">
+                      ➝ {recipe.amount}x {recipe.output}
+                    </span>
+                    <button
+                      onClick={() => craftItem(recipe, inventory, setInventory)}
+                      className="mt-2 text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded"
+                    >
+                      Craft
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
