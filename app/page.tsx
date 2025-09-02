@@ -1197,54 +1197,65 @@ export default function PixelMapGame() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-b from-blue-100 to-blue-200 p-6 rounded-2xl shadow-lg mt-6 mb-6 border-2 border-blue-300">
-          {/* Tab buttons */}
-          <div className="flex justify-center space-x-4 mb-6">
-            {["inventory", "crafting", "selling"].map((tab) => (
+        <div className="bg-gradient-to-b from-blue-900 to-indigo-900 p-6 rounded-xl border-2 border-blue-700 shadow-2xl mt-6 mb-6">
+          {/* Tab buttons with modern styling */}
+          <div className="flex space-x-3 mb-6 p-1 bg-blue-800/30 rounded-lg">
+            {(["inventory", "crafting", "selling"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2 rounded-lg font-semibold shadow-md transition 
-                  ${
-                    activeTab === tab
-                      ? "bg-blue-700 text-white scale-105"
-                      : "bg-white text-blue-700 border border-blue-300 hover:bg-blue-50"
-                  }`}
+                className={`px-5 py-2 rounded-md text-sm font-medium transition-all duration-200 flex-1 ${
+                  activeTab === tab
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                    : "bg-blue-900/50 text-blue-200 hover:bg-blue-800/70"
+                }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </div>
 
-          {/* Gold display */}
-          <div className="mb-6 p-3 bg-yellow-200 border-2 border-yellow-400 rounded-lg text-center shadow-inner">
-            <span className="text-lg font-bold text-yellow-900 tracking-wide">
-              💰 Gold: {gold}
-            </span>
+          {/* Gold display with coin icon */}
+          <div className="mb-6 p-3 bg-gradient-to-r from-yellow-600 to-yellow-500 border-2 border-yellow-400 rounded-lg text-center shadow-md flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="font-bold text-yellow-100 text-lg">Gold: {gold}</span>
           </div>
 
           {/* Inventory tab */}
           {activeTab === "inventory" && (
             <>
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-blue-900 drop-shadow">📦 Inventory</h2>
+                <h2 className="text-xl font-bold text-blue-100 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  Inventory
+                </h2>
                 <button
                   onClick={resetInventory}
-                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg shadow-md"
+                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors"
                 >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
                   Reset
                 </button>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {Object.entries(inventory)
                   .filter(([_, count]) => count > 0)
                   .map(([resource, count]) => (
                     <div
                       key={resource}
-                      className="flex flex-col items-center justify-center bg-white rounded-lg p-3 shadow-md hover:scale-105 transition"
+                      className="bg-blue-800/40 backdrop-blur-sm rounded-lg p-3 border border-blue-600/30 hover:border-blue-500 transition-all hover:scale-105 flex flex-col items-center justify-center shadow-md"
                     >
-                      <span className="text-blue-800 font-semibold">{resource}</span>
-                      <span className="text-lg font-bold text-blue-900">{count}</span>
+                      <div className="h-10 w-10 bg-blue-700 rounded-full mb-2 flex items-center justify-center text-white font-bold">
+                        {resource.charAt(0)}
+                      </div>
+                      <span className="text-blue-200 text-sm">{resource}</span>
+                      <span className="font-bold text-white mt-1">{count}</span>
                     </div>
                   ))}
               </div>
@@ -1254,29 +1265,49 @@ export default function PixelMapGame() {
           {/* Crafting tab */}
           {activeTab === "crafting" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-900 mb-4 drop-shadow">⚒️ Crafting</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {CRAFTING_RECIPES.filter((recipe) =>
-                  Object.entries(recipe.inputs).every(
-                    ([resource, required]) =>
+              <h2 className="text-xl font-bold text-blue-100 mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                Crafting
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {CRAFTING_RECIPES.filter(recipe => {
+                  return Object.entries(recipe.inputs).every(
+                    ([resource, required]) => 
                       (inventory[resource as keyof Inventory] || 0) >= required
-                  )
-                ).map((recipe, idx) => (
+                  );
+                }).map((recipe, idx) => (
                   <div
                     key={idx}
-                    className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center hover:scale-105 transition"
+                    className="bg-blue-800/40 backdrop-blur-sm p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all shadow-md"
                   >
-                    <span className="text-blue-700 text-sm mb-1">
-                      {Object.entries(recipe.inputs)
-                        .map(([res, qty]) => `${res} x${qty}`)
-                        .join(" + ")}
-                    </span>
-                    <span className="font-bold text-blue-900 text-lg">
-                      ➝ {recipe.output} x{recipe.amount}
-                    </span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                          {recipe.output.charAt(0)}
+                        </div>
+                        <span className="text-blue-100 font-medium">{recipe.output}</span>
+                      </div>
+                      <span className="bg-blue-700 text-blue-100 text-xs px-2 py-1 rounded-full">
+                        x{recipe.amount}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm mb-4">
+                      <div className="text-blue-300 flex items-center gap-1">
+                        {Object.entries(recipe.inputs).map(([res, qty]) => (
+                          <span key={res} className="bg-blue-900/70 px-2 py-1 rounded-md">
+                            {res} ×{qty}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-blue-200">→</span>
+                    </div>
+                    
                     <button
                       onClick={() => craftItem(recipe, inventory, setInventory)}
-                      className="mt-3 text-sm bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg shadow-md"
+                      className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white py-2 rounded-md text-sm font-medium transition-all shadow-md hover:shadow-lg"
                     >
                       Craft
                     </button>
@@ -1289,34 +1320,55 @@ export default function PixelMapGame() {
           {/* Selling tab */}
           {activeTab === "selling" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-900 mb-4 drop-shadow">🏷️ Sell Items</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <h2 className="text-xl font-bold text-blue-100 mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Sell Items
+              </h2>
+              <div className="grid grid-cols-1 gap-3">
                 {Object.entries(inventory)
                   .filter(([item, count]) => count > 0 && ITEM_VALUES[item as keyof Inventory] !== undefined)
                   .map(([item, count]) => {
                     const value = ITEM_VALUES[item as keyof Inventory] || 0;
+                    
                     return (
                       <div
                         key={item}
-                        className="bg-white p-4 rounded-lg shadow-md flex items-center justify-between hover:scale-105 transition"
+                        className="bg-blue-800/40 backdrop-blur-sm p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex items-center justify-between shadow-md"
                       >
                         {/* Left side: Item info */}
-                        <div className="flex flex-col">
-                          <span className="font-bold text-blue-900">{item} x{count}</span>
-                          <span className="text-blue-700 text-sm">Value: {value} gold</span>
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-gradient-to-br from-amber-600 to-amber-500 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                            {item.charAt(0)}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-bold text-white">{item}</span>
+                            <span className="text-blue-200 text-sm">Stock: {count}</span>
+                            <span className="text-yellow-300 text-sm">Value: {value} gold each</span>
+                          </div>
                         </div>
 
                         {/* Right side: Buttons */}
-                        <div className="flex space-x-2">
-                          {[1, 5, count].map((amt, i) => (
-                            <button
-                              key={i}
-                              onClick={() => sellItem(item as keyof Inventory, amt)}
-                              className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg shadow-md"
-                            >
-                              Sell {amt === count ? "All" : amt}
-                            </button>
-                          ))}
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 1)}
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                          >
+                            Sell 1
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 5)}
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                          >
+                            Sell 5
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, count)}
+                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                          >
+                            Sell All
+                          </button>
                         </div>
                       </div>
                     );
