@@ -1097,8 +1097,9 @@ export default function PixelMapGame() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">Pixel Map Collector</h1>
-        <p className="text-center text-gray-600 mb-6">Click on terrain to collect resources! Each pixel has a 5-minute cooldown.</p>
+        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">Pixel Harvester</h1>
+        <p className="text-center text-gray-600 mb-2">Click on terrain to collect resources!</p>
+        <p className="text-center text-gray-600 mb-6">Each pixel has a 5-minute cooldown.</p>
         
         <div className="flex flex-col md:flex-row gap-6">
           {/* Canvas and controls */}
@@ -1157,6 +1158,7 @@ export default function PixelMapGame() {
           <div className="w-full md:w-80">           
           
             <div className="mb-6 max-h-150 overflow-y-auto">
+              <h2 className="text-center text-gray-600 mt-2 mb-3 font-bold">Available Resources:</h2>
 
               {/* Outer card container */}
               <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -1195,68 +1197,54 @@ export default function PixelMapGame() {
           </div>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg mt-4 mb-4">
+        <div className="bg-gradient-to-b from-blue-100 to-blue-200 p-6 rounded-2xl shadow-lg mt-6 mb-6 border-2 border-blue-300">
           {/* Tab buttons */}
-          <div className="flex space-x-2 mb-4">
-            <button
-              onClick={() => setActiveTab("inventory")}
-              className={`px-3 py-1 rounded ${
-                activeTab === "inventory"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-blue-600 border border-blue-300"
-              }`}
-            >
-              Inventory
-            </button>
-            <button
-              onClick={() => setActiveTab("crafting")}
-              className={`px-3 py-1 rounded ${
-                activeTab === "crafting"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-blue-600 border border-blue-300"
-              }`}
-            >
-              Crafting
-            </button>
-            <button
-              onClick={() => setActiveTab("selling")}
-              className={`px-3 py-1 rounded ${
-                activeTab === "selling"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-blue-600 border border-blue-300"
-              }`}
-            >
-              Selling
-            </button>
+          <div className="flex justify-center space-x-4 mb-6">
+            {["inventory", "crafting", "selling"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-5 py-2 rounded-lg font-semibold shadow-md transition 
+                  ${
+                    activeTab === tab
+                      ? "bg-blue-700 text-white scale-105"
+                      : "bg-white text-blue-700 border border-blue-300 hover:bg-blue-50"
+                  }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
           </div>
 
           {/* Gold display */}
-          <div className="mb-4 p-2 bg-yellow-100 border border-yellow-300 rounded text-center">
-            <span className="font-bold text-yellow-700">Gold: {gold}</span>
+          <div className="mb-6 p-3 bg-yellow-200 border-2 border-yellow-400 rounded-lg text-center shadow-inner">
+            <span className="text-lg font-bold text-yellow-900 tracking-wide">
+              💰 Gold: {gold}
+            </span>
           </div>
 
           {/* Inventory tab */}
           {activeTab === "inventory" && (
             <>
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold text-blue-800">Inventory</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-blue-900 drop-shadow">📦 Inventory</h2>
                 <button
                   onClick={resetInventory}
-                  className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg shadow-md"
                 >
                   Reset
                 </button>
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {Object.entries(inventory)
-                  .filter(([_, count]) => count > 0) // ✅ only show if count > 0
+                  .filter(([_, count]) => count > 0)
                   .map(([resource, count]) => (
                     <div
                       key={resource}
-                      className="flex justify-between items-center bg-white rounded p-2 shadow-sm"
+                      className="flex flex-col items-center justify-center bg-white rounded-lg p-3 shadow-md hover:scale-105 transition"
                     >
-                      <span className="text-blue-700">{resource}:</span>
-                      <span className="font-bold text-blue-900">{count}</span>
+                      <span className="text-blue-800 font-semibold">{resource}</span>
+                      <span className="text-lg font-bold text-blue-900">{count}</span>
                     </div>
                   ))}
               </div>
@@ -1266,30 +1254,29 @@ export default function PixelMapGame() {
           {/* Crafting tab */}
           {activeTab === "crafting" && (
             <div>
-              <h2 className="text-lg font-semibold text-blue-800 mb-2">Crafting</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {CRAFTING_RECIPES.filter(recipe => {
-                  // Only show recipes that the player can craft
-                  return Object.entries(recipe.inputs).every(
-                    ([resource, required]) => 
+              <h2 className="text-xl font-bold text-blue-900 mb-4 drop-shadow">⚒️ Crafting</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {CRAFTING_RECIPES.filter((recipe) =>
+                  Object.entries(recipe.inputs).every(
+                    ([resource, required]) =>
                       (inventory[resource as keyof Inventory] || 0) >= required
-                  );
-                }).map((recipe, idx) => (
+                  )
+                ).map((recipe, idx) => (
                   <div
                     key={idx}
-                    className="bg-white p-2 rounded shadow-sm flex flex-col items-center"
+                    className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center hover:scale-105 transition"
                   >
-                    <span className="text-blue-700">
+                    <span className="text-blue-700 text-sm mb-1">
                       {Object.entries(recipe.inputs)
-                        .map(([res, qty]) => `${qty}x ${res}`)
+                        .map(([res, qty]) => `${res} x${qty}`)
                         .join(" + ")}
                     </span>
-                    <span className="font-bold text-blue-900">
-                      ➝ {recipe.amount}x {recipe.output}
+                    <span className="font-bold text-blue-900 text-lg">
+                      ➝ {recipe.output} x{recipe.amount}
                     </span>
                     <button
                       onClick={() => craftItem(recipe, inventory, setInventory)}
-                      className="mt-2 text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded"
+                      className="mt-3 text-sm bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg shadow-md"
                     >
                       Craft
                     </button>
@@ -1302,41 +1289,34 @@ export default function PixelMapGame() {
           {/* Selling tab */}
           {activeTab === "selling" && (
             <div>
-              <h2 className="text-lg font-semibold text-blue-800 mb-2">Sell Items</h2>
-              <div className="grid grid-cols-2 gap-3">
+              <h2 className="text-xl font-bold text-blue-900 mb-4 drop-shadow">🏷️ Sell Items</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Object.entries(inventory)
                   .filter(([item, count]) => count > 0 && ITEM_VALUES[item as keyof Inventory] !== undefined)
                   .map(([item, count]) => {
                     const value = ITEM_VALUES[item as keyof Inventory] || 0;
-                    
                     return (
                       <div
                         key={item}
-                        className="bg-white p-2 rounded shadow-sm flex flex-col items-center"
+                        className="bg-white p-4 rounded-lg shadow-md flex items-center justify-between hover:scale-105 transition"
                       >
-                        <span className="font-bold text-blue-900">{item}</span>
-                        <span className="text-blue-700">Value: {value} gold</span>
-                        <span className="text-blue-700">You have: {count}</span>
-                        
-                        <div className="flex space-x-1 mt-2">
-                          <button
-                            onClick={() => sellItem(item as keyof Inventory, 1)}
-                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
-                          >
-                            Sell 1
-                          </button>
-                          <button
-                            onClick={() => sellItem(item as keyof Inventory, 5)}
-                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
-                          >
-                            Sell 5
-                          </button>
-                          <button
-                            onClick={() => sellItem(item as keyof Inventory, count)}
-                            className="text-xs bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
-                          >
-                            Sell All
-                          </button>
+                        {/* Left side: Item info */}
+                        <div className="flex flex-col">
+                          <span className="font-bold text-blue-900">{item} x{count}</span>
+                          <span className="text-blue-700 text-sm">Value: {value} gold</span>
+                        </div>
+
+                        {/* Right side: Buttons */}
+                        <div className="flex space-x-2">
+                          {[1, 5, count].map((amt, i) => (
+                            <button
+                              key={i}
+                              onClick={() => sellItem(item as keyof Inventory, amt)}
+                              className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg shadow-md"
+                            >
+                              Sell {amt === count ? "All" : amt}
+                            </button>
+                          ))}
                         </div>
                       </div>
                     );
@@ -1344,8 +1324,8 @@ export default function PixelMapGame() {
               </div>
             </div>
           )}
-
         </div>
+
       </div>
     </div>
   );
