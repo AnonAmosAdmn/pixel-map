@@ -1095,36 +1095,41 @@ export default function PixelMapGame() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">Pixel Harvester</h1>
-        <p className="text-center text-gray-600 mb-2">Click on terrain to collect resources!</p>
-        <p className="text-center text-gray-600 mb-6">Each pixel has a 5-minute cooldown.</p>
-        
-        <div className="flex flex-col md:flex-row gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-6">
+      <div className="max-w-4xl mx-auto bg-gradient-to-b from-blue-800 to-blue-900 rounded-2xl shadow-2xl p-8 border-2 border-blue-700">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent mb-2">
+            Pixel Harvester
+          </h1>
+          <p className="text-blue-200 mb-2">Click on terrain to collect resources!</p>
+          <p className="text-blue-200 mb-6">Each pixel has a 5-minute cooldown.</p>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-8">
           {/* Canvas and controls */}
           <div className="flex-1">
-            <div className="border-2 border-gray-300 rounded-lg p-2 bg-white shadow-inner">
+            <div className="border-4 border-blue-600 rounded-xl p-3 bg-blue-900/50 shadow-inner">
               <canvas
                 ref={canvasRef}
                 width={512}
                 height={512}
-                className="w-full h-full cursor-crosshair"
+                className="w-full h-full cursor-crosshair rounded-lg"
                 onClick={handleCanvasClick}
                 onMouseMove={handleCanvasMouseMove}
                 onMouseLeave={handleCanvasMouseLeave}
               />
             </div>
-            
-            <div className="flex justify-center mt-4 gap-4">
+        
+            <div className="flex justify-center mt-6 gap-4">
               <button
                 onClick={generateMap}
                 disabled={isGenerating}
-                className={`px-6 py-3 rounded-lg font-semibold flex items-center ${
+                className={`px-6 py-3 rounded-xl font-semibold flex items-center transition-all ${
                   isGenerating 
-                    ? 'bg-blue-400 cursor-not-allowed' 
-                    : 'bg-blue-500 hover:bg-blue-600'
-                } text-white transition-colors`}
+                    ? 'bg-blue-700 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-md hover:shadow-lg'
+                } text-white`}
               >
                 {isGenerating ? (
                   <>
@@ -1145,7 +1150,7 @@ export default function PixelMapGame() {
               </button>
               <button
                 onClick={handleExport}
-                className="px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center"
+                className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold hover:from-green-500 hover:to-green-400 transition-all shadow-md hover:shadow-lg flex items-center"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -1155,37 +1160,37 @@ export default function PixelMapGame() {
             </div>
           </div>
           
+          {/* Terrain Information */}
           <div className="w-full md:w-80">           
-          
             <div className="mb-6 max-h-150 overflow-y-auto">
-              <h2 className="text-center text-gray-600 mt-2 mb-3 font-bold">Available Resources:</h2>
+
 
               {/* Outer card container */}
-              <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+              <div className="rounded-xl border border-blue-600 bg-blue-800/40 backdrop-blur-sm shadow-md p-2">
                 {Object.entries(TERRAIN_TYPES).map(([key, terrain], idx) => {
                   const terrainData = terrainCounts[key as TerrainType];
 
                   return (
                     <div
                       key={key}
-                      className={`flex items-center justify-between p-2 ${
-                        idx !== Object.keys(TERRAIN_TYPES).length - 1 ? "border-b border-gray-200" : ""
+                      className={`flex items-center justify-between p-3 rounded-lg transition-all hover:bg-blue-700/50 ${
+                        idx !== Object.keys(TERRAIN_TYPES).length - 1 ? "mb-2" : ""
                       }`}
                     >
                       <div className="flex items-center">
                         <div
-                          className="w-5 h-5 mr-3 rounded-sm border border-gray-300"
+                          className="w-6 h-6 mr-3 rounded-md border-2 border-blue-400 shadow-sm"
                           style={{ backgroundColor: terrain.color }}
                         />
                         <div>
-                          <div className="text-gray-700 font-medium">{terrain.name}</div>
-                          <div className="text-xs text-gray-500">
-                            Collects: {terrain.resource} / {terrain.rareResource} / {terrain.epicResource}
+                          <div className="text-blue-100 font-medium">{terrain.name}</div>
+                          <div className="text-xs text-blue-300">
+                            ({terrain.resource} / {terrain.rareResource} / {terrain.epicResource})
                           </div>
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className="font-mono px-2 py-1 rounded text-xs bg-gray-100 text-gray-700 mb-1">
+                        <span className="font-mono px-2 py-1 rounded-md text-xs bg-blue-900/70 text-blue-100 mb-1 shadow-inner">
                           {terrainData.collected}/{terrainData.maxCollection}
                         </span>
                       </div>
@@ -1251,9 +1256,6 @@ export default function PixelMapGame() {
                       key={resource}
                       className="bg-blue-800/40 backdrop-blur-sm rounded-lg p-3 border border-blue-600/30 hover:border-blue-500 transition-all hover:scale-105 flex flex-col items-center justify-center shadow-md"
                     >
-                      <div className="h-10 w-10 bg-blue-700 rounded-full mb-2 flex items-center justify-center text-white font-bold">
-                        {resource.charAt(0)}
-                      </div>
                       <span className="text-blue-200 text-sm">{resource}</span>
                       <span className="font-bold text-white mt-1">{count}</span>
                     </div>
@@ -1284,9 +1286,6 @@ export default function PixelMapGame() {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                          {recipe.output.charAt(0)}
-                        </div>
                         <span className="text-blue-100 font-medium">{recipe.output}</span>
                       </div>
                       <span className="bg-blue-700 text-blue-100 text-xs px-2 py-1 rounded-full">
@@ -1339,9 +1338,6 @@ export default function PixelMapGame() {
                       >
                         {/* Left side: Item info */}
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-gradient-to-br from-amber-600 to-amber-500 rounded-full flex items-center justify-center text-white font-bold shadow-md">
-                            {item.charAt(0)}
-                          </div>
                           <div className="flex flex-col">
                             <span className="font-bold text-white">{item}</span>
                             <span className="text-blue-200 text-sm">Stock: {count}</span>
