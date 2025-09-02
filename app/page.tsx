@@ -131,8 +131,6 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   Moss: 2,
   Mushrooms: 3,
   Frogs: 4,
-  
-  // Rare Resources
   Pearl: 15,
   Diamond: 25,
   Ruby: 20,
@@ -140,8 +138,6 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   Coral: 12,
   Gem: 10,
   Crystal: 8,
-  
-  // Processed Materials
   Planks: 3,
   StoneBricks: 5,
   CopperIngot: 10,
@@ -154,8 +150,6 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   PolishedEmerald: 30,
   CrystalShard: 12,
   GemCluster: 25,
-  
-  // Food & Consumables
   Bread: 6,
   CookedFish: 10,
   Stew: 12,
@@ -169,8 +163,6 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   InvisibilityPotion: 35,
   FireResistancePotion: 28,
   JumpBoostPotion: 25,
-  
-  // Tools & Equipment
   Pickaxe: 15,
   Axe: 12,
   FishingRod: 18,
@@ -184,23 +176,17 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   Arrow: 2,
   Waterskin: 10,
   Spyglass: 35,
-  
-  // Jewelry & Decorative
   DiamondRing: 75,
   PearlNecklace: 65,
   RubyPendant: 70,
   EmeraldEarring: 60,
   CoralCirclet: 55,
-  
-  // Special Items
   OceanAmulet: 100,
   ForestTalisman: 90,
   VolcanicGauntlet: 110,
   RoyalScepter: 150,
   ArtisanLens: 85,
   EnchantedScroll: 95,
-  
-  // Building Blocks
   CraftingTable: 25,
   StoneFurnace: 35,
   ReinforcedWindow: 40,
@@ -209,72 +195,60 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
 };
 
 const CRAFTING_RECIPES: Recipe[] = [
-  // BASIC TOOLS & EQUIPMENT
   { inputs: { Wood: 2, Stone: 1 }, output: "Pickaxe", amount: 1 },
   { inputs: { Wood: 1, Stone: 1 }, output: "Axe", amount: 1 },
   { inputs: { Wood: 2, Iron: 1 }, output: "FishingRod", amount: 1 },
   { inputs: { Wood: 3, Resin: 2 }, output: "Torch", amount: 4 },
-  
-  // BUILDING MATERIALS
   { inputs: { Wood: 4 }, output: "Planks", amount: 4 },
   { inputs: { Stone: 2 }, output: "StoneBricks", amount: 1 },
-  
-  // METAL PROCESSING
   { inputs: { Copper: 3, Coal: 1 }, output: "CopperIngot", amount: 1 },
   { inputs: { Iron: 3, Coal: 1 }, output: "IronIngot", amount: 1 },
   { inputs: { Gold: 3, Coal: 1 }, output: "GoldIngot", amount: 1 },
   { inputs: { Silver: 3, Coal: 1 }, output: "SilverIngot", amount: 1 },
   { inputs: { Obsidian: 2, Coal: 2 }, output: "ObsidianShard", amount: 1 },
-  
-  // GEM PROCESSING
   { inputs: { Diamond: 1 }, output: "PolishedDiamond", amount: 1 },
   { inputs: { Ruby: 1 }, output: "PolishedRuby", amount: 1 },
   { inputs: { Emerald: 1 }, output: "PolishedEmerald", amount: 1 },
   { inputs: { Crystal: 2 }, output: "CrystalShard", amount: 4 },
   { inputs: { Gem: 3 }, output: "GemCluster", amount: 1 },
-  
-  // FOOD & CONSUMABLES
   { inputs: { Wheat: 3 }, output: "Bread", amount: 1 },
   { inputs: { Fish: 1, Herbs: 1 }, output: "CookedFish", amount: 1 },
   { inputs: { Mushrooms: 2, Herbs: 1 }, output: "Stew", amount: 1 },
   { inputs: { Honey: 2, Herbs: 1 }, output: "HealingSyrup", amount: 1 },
   { inputs: { Wheat: 1, Honey: 1 }, output: "HoneyCake", amount: 2 },
   { inputs: { Frogs: 2, Herbs: 1 }, output: "FrogLegs", amount: 2 },
-  
-  // POTIONS & ALCHEMY
   { inputs: { Mushrooms: 2, Crystal: 1 }, output: "ManaPotion", amount: 1 },
   { inputs: { Honey: 1, Resin: 1, Herbs: 1 }, output: "StaminaPotion", amount: 1 },
   { inputs: { Coral: 1, Pearl: 1 }, output: "WaterBreathingPotion", amount: 1 },
   { inputs: { Emerald: 1, Moss: 2 }, output: "InvisibilityPotion", amount: 1 },
   { inputs: { Ruby: 1, Coal: 2 }, output: "FireResistancePotion", amount: 1 },
-  
-  // JEWELRY & DECORATIVE
   { inputs: { GoldIngot: 2, Diamond: 1 }, output: "DiamondRing", amount: 1 },
   { inputs: { SilverIngot: 2, Pearl: 1 }, output: "PearlNecklace", amount: 1 },
   { inputs: { GoldIngot: 1, Ruby: 1 }, output: "RubyPendant", amount: 1 },
   { inputs: { SilverIngot: 1, Emerald: 1 }, output: "EmeraldEarring", amount: 2 },
-  
-  // ADVANCED TOOLS & WEAPONS
   { inputs: { IronIngot: 2, Wood: 2 }, output: "IronSword", amount: 1 },
   { inputs: { GoldIngot: 2, Wood: 1 }, output: "GoldDagger", amount: 1 },
   { inputs: { Diamond: 1, IronIngot: 2 }, output: "DiamondPickaxe", amount: 1 },
   { inputs: { ObsidianShard: 2, IronIngot: 1 }, output: "ObsidianBlade", amount: 1 },
   { inputs: { CrystalShard: 3, SilverIngot: 1 }, output: "CrystalWand", amount: 1 },
-  
-  // SPECIAL ITEMS
   { inputs: { Pearl: 3, Coral: 2, GoldIngot: 1 }, output: "OceanAmulet", amount: 1 },
   { inputs: { Emerald: 2, Moss: 3, Wood: 2 }, output: "ForestTalisman", amount: 1 },
   { inputs: { Ruby: 2, Coal: 3, IronIngot: 2 }, output: "VolcanicGauntlet", amount: 1 },
   { inputs: { Diamond: 3, Crystal: 2, GoldIngot: 3 }, output: "RoyalScepter", amount: 1 },
   { inputs: { GemCluster: 1, SilverIngot: 2, Resin: 2 }, output: "ArtisanLens", amount: 1 },
-  
-  // BUILDING BLOCKS
   { inputs: { Planks: 4 }, output: "CraftingTable", amount: 1 },
   { inputs: { StoneBricks: 8 }, output: "StoneFurnace", amount: 1 },
   { inputs: { IronIngot: 5, Glass: 3 }, output: "ReinforcedWindow", amount: 1 },
   { inputs: { Wood: 3, Resin: 1 }, output: "WoodenChest", amount: 1 },
   { inputs: { IronIngot: 4, GoldIngot: 1 }, output: "MetalChest", amount: 1 },
-  { inputs: { Glass: 1, GoldIngot: 1 }, output: "Spyglass", amount: 1 }
+  { inputs: { Glass: 1, GoldIngot: 1 }, output: "Spyglass", amount: 1 },
+  { inputs: { HealingSyrup: 1, Herbs: 2 }, output: "HealingPotion", amount: 1 },
+  { inputs: { CrystalShard: 1, Moss: 2 }, output: "JumpBoostPotion", amount: 1 },
+  { inputs: { Coral: 3, SilverIngot: 1 }, output: "CoralCirclet", amount: 1 },
+  { inputs: { Wood: 3, Resin: 1 }, output: "Bow", amount: 1 },
+  { inputs: { Stone: 1, Wood: 1, Resin: 1 }, output: "Arrow", amount: 6 },
+  { inputs: { Moss: 2, Resin: 1 }, output: "Waterskin", amount: 1 },
+  { inputs: { CrystalShard: 1, Gem: 2 }, output: "EnchantedScroll", amount: 1 },
 ];
 
 const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
