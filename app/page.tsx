@@ -1082,7 +1082,7 @@ export default function PixelMapGame() {
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           {/* Canvas and controls */}
           <div className="flex-1">
-            <div className="border-4 border-blue-600 rounded-xl p-2 sm:p-3 bg-blue-900/50 shadow-inner">
+            <div className="border-6 border-blue-600 rounded-xl p-2 sm:p-3 bg-blue-900/50 shadow-inner">
               <canvas
                 ref={canvasRef}
                 width={512}
@@ -1136,13 +1136,6 @@ export default function PixelMapGame() {
           {/* Terrain Information */}
           <div className="w-full lg:w-80">           
             <div className="mb-6 max-h-150 overflow-y-auto">
-              <h2 className="text-center text-blue-100 mt-2 mb-3 font-bold text-lg flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Available Resources
-              </h2>
-
               {/* Outer card container */}
               <div className="rounded-xl border border-blue-600 bg-blue-800/40 backdrop-blur-sm shadow-md p-2">
                 {Object.entries(TERRAIN_TYPES).map(([key, terrain], idx) => {
@@ -1260,7 +1253,7 @@ export default function PixelMapGame() {
                 }).map((recipe, idx) => (
                   <div
                     key={idx}
-                    className="bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all shadow-md"
+                    className="group bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all shadow-md flex flex-col"
                   >
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
                       <div className="flex items-center gap-2">
@@ -1282,12 +1275,25 @@ export default function PixelMapGame() {
                       <span className="text-blue-200 hidden sm:inline">→</span>
                     </div>
                     
-                    <button
-                      onClick={() => craftItem(recipe, inventory, setInventory)}
-                      className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white py-2 rounded-md text-xs sm:text-sm font-medium transition-all shadow-md hover:shadow-lg"
-                    >
-                      Craft
-                    </button>
+                    {/* Craft button - Only show on hover for desktop */}
+                    <div className="mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-end hidden sm:flex">
+                      <button
+                        onClick={() => craftItem(recipe, inventory, setInventory)}
+                        className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white py-2 px-4 rounded-md text-xs sm:text-sm font-medium transition-all shadow-md hover:shadow-lg min-w-[80px]"
+                      >
+                        Craft
+                      </button>
+                    </div>
+                    
+                    {/* Craft button - Always show on mobile */}
+                    <div className="mt-auto flex justify-end sm:hidden">
+                      <button
+                        onClick={() => craftItem(recipe, inventory, setInventory)}
+                        className="bg-gradient-to-r from-green-600 to-green-500 text-white py-2 px-4 rounded-md text-xs font-medium shadow-md min-w-[80px]"
+                      >
+                        Craft
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1312,36 +1318,58 @@ export default function PixelMapGame() {
                     return (
                       <div
                         key={item}
-                        className="bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex flex-col sm:flex-row items-center justify-between shadow-md gap-2"
+                        className="group bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex items-center justify-between shadow-md gap-2"
                       >
                         {/* Left side: Item info */}
                         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                           <div className="flex flex-col min-w-0 flex-1">
                             <span className="font-bold text-white text-sm sm:text-base truncate">{item}</span>
-                            <div className="flex justify-between text-xs sm:text-sm">
+                            <div className="flex flex-col xs:flex-row justify-between gap-1 xs:gap-2 text-xs sm:text-sm">
                               <span className="text-blue-200">Stock: {count}</span>
                               <span className="text-yellow-300">Value: {value} gold</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right side: Buttons */}
-                        <div className="flex flex-row sm:flex-col md:flex-row gap-1 sm:gap-2 w-full sm:w-auto justify-end">
+                        {/* Right side: Buttons - Only show on hover for desktop */}
+                        <div className="flex flex-col gap-1 sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-2 hidden sm:flex">
                           <button
                             onClick={() => sellItem(item as keyof Inventory, 1)}
-                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
                           >
                             Sell 1
                           </button>
                           <button
                             onClick={() => sellItem(item as keyof Inventory, 5)}
-                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
                           >
                             Sell 5
                           </button>
                           <button
                             onClick={() => sellItem(item as keyof Inventory, count)}
-                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
+                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
+                          >
+                            Sell All
+                          </button>
+                        </div>
+
+                        {/* Right side: Buttons - Always show on mobile */}
+                        <div className="flex flex-col gap-1 sm:gap-2 ml-2 sm:hidden">
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 1)}
+                            className="text-xs bg-blue-600 text-white px-2 py-1 rounded-md shadow-sm w-full min-w-[70px]"
+                          >
+                            Sell 1
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, 5)}
+                            className="text-xs bg-blue-600 text-white px-2 py-1 rounded-md shadow-sm w-full min-w-[70px]"
+                          >
+                            Sell 5
+                          </button>
+                          <button
+                            onClick={() => sellItem(item as keyof Inventory, count)}
+                            className="text-xs bg-amber-600 text-white px-2 py-1 rounded-md shadow-sm w-full min-w-[70px]"
                           >
                             Sell All
                           </button>
@@ -1352,6 +1380,8 @@ export default function PixelMapGame() {
               </div>
             </div>
           )}
+
+
         </div>
       </div>
     </div>
