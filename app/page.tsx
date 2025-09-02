@@ -1134,8 +1134,10 @@ export default function PixelMapGame() {
           </div>
           
           {/* Terrain Information */}
-          <div className="w-full lg:w-80">           
+          <div className="w-full md:w-80">           
             <div className="mb-6 max-h-150 overflow-y-auto">
+
+
               {/* Outer card container */}
               <div className="rounded-xl border border-blue-600 bg-blue-800/40 backdrop-blur-sm shadow-md p-2">
                 {Object.entries(TERRAIN_TYPES).map(([key, terrain], idx) => {
@@ -1144,18 +1146,18 @@ export default function PixelMapGame() {
                   return (
                     <div
                       key={key}
-                      className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all hover:bg-blue-700/50 ${
+                      className={`flex items-center justify-between p-3 rounded-lg transition-all hover:bg-blue-700/50 ${
                         idx !== Object.keys(TERRAIN_TYPES).length - 1 ? "mb-2" : ""
                       }`}
                     >
                       <div className="flex items-center">
                         <div
-                          className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 rounded-md border-2 border-blue-400 shadow-sm"
+                          className="w-6 h-6 mr-3 rounded-md border-2 border-blue-400 shadow-sm"
                           style={{ backgroundColor: terrain.color }}
                         />
-                        <div className="max-w-[120px] sm:max-w-none">
-                          <div className="text-blue-100 font-medium text-sm sm:text-base">{terrain.name}</div>
-                          <div className="text-xs text-blue-300 hidden xs:block">
+                        <div>
+                          <div className="text-blue-100 font-medium">{terrain.name}</div>
+                          <div className="text-xs text-blue-300">
                             ({terrain.resource} / {terrain.rareResource} / {terrain.epicResource})
                           </div>
                         </div>
