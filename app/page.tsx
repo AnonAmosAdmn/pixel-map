@@ -1067,47 +1067,46 @@ export default function PixelMapGame() {
     alert(`Sold ${amount}x ${item} for ${totalValue} gold!`);
   };
 
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-6">
-      <div className="max-w-4xl mx-auto bg-gradient-to-b from-blue-800 to-blue-900 rounded-2xl shadow-2xl p-8 border-2 border-blue-700">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-4 sm:p-6">
+      <div className="max-w-4xl mx-auto bg-gradient-to-b from-blue-800 to-blue-900 rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border-2 border-blue-700">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent mb-2">
+        <div className="text-center mb-6 md:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent mb-2">
             Pixel Harvester
           </h1>
-          <p className="text-blue-200 mb-2">Click on terrain to collect resources!</p>
-          <p className="text-blue-200 mb-6">Each pixel has a 5-minute cooldown.</p>
+          <p className="text-blue-200 text-sm sm:text-base mb-1">Click on terrain to collect resources!</p>
+          <p className="text-blue-200 text-sm sm:text-base mb-4 md:mb-6">Each pixel has a 5-minute cooldown.</p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           {/* Canvas and controls */}
           <div className="flex-1">
-            <div className="border-4 border-blue-600 rounded-xl p-3 bg-blue-900/50 shadow-inner">
+            <div className="border-4 border-blue-600 rounded-xl p-2 sm:p-3 bg-blue-900/50 shadow-inner">
               <canvas
                 ref={canvasRef}
                 width={512}
                 height={512}
-                className="w-full h-full cursor-crosshair rounded-lg"
+                className="w-full h-auto cursor-crosshair rounded-lg"
                 onClick={handleCanvasClick}
                 onMouseMove={handleCanvasMouseMove}
                 onMouseLeave={handleCanvasMouseLeave}
               />
             </div>
         
-            <div className="flex justify-center mt-6 gap-4">
+            <div className="flex flex-col sm:flex-row justify-center mt-4 sm:mt-6 gap-3 sm:gap-4">
               <button
                 onClick={generateMap}
                 disabled={isGenerating}
-                className={`px-6 py-3 rounded-xl font-semibold flex items-center transition-all ${
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold flex items-center justify-center transition-all ${
                   isGenerating 
                     ? 'bg-blue-700 cursor-not-allowed' 
                     : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-md hover:shadow-lg'
-                } text-white`}
+                } text-white text-sm sm:text-base`}
               >
                 {isGenerating ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -1115,18 +1114,18 @@ export default function PixelMapGame() {
                   </>
                 ) : (
                   <>
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
-                    Generate New Map
+                    Generate Map
                   </>
                 )}
               </button>
               <button
                 onClick={handleExport}
-                className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold hover:from-green-500 hover:to-green-400 transition-all shadow-md hover:shadow-lg flex items-center"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold hover:from-green-500 hover:to-green-400 transition-all shadow-md hover:shadow-lg flex items-center justify-center text-sm sm:text-base"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
                 Export PNG
@@ -1135,9 +1134,14 @@ export default function PixelMapGame() {
           </div>
           
           {/* Terrain Information */}
-          <div className="w-full md:w-80">           
+          <div className="w-full lg:w-80">           
             <div className="mb-6 max-h-150 overflow-y-auto">
-
+              <h2 className="text-center text-blue-100 mt-2 mb-3 font-bold text-lg flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Available Resources
+              </h2>
 
               {/* Outer card container */}
               <div className="rounded-xl border border-blue-600 bg-blue-800/40 backdrop-blur-sm shadow-md p-2">
@@ -1147,18 +1151,18 @@ export default function PixelMapGame() {
                   return (
                     <div
                       key={key}
-                      className={`flex items-center justify-between p-3 rounded-lg transition-all hover:bg-blue-700/50 ${
+                      className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all hover:bg-blue-700/50 ${
                         idx !== Object.keys(TERRAIN_TYPES).length - 1 ? "mb-2" : ""
                       }`}
                     >
                       <div className="flex items-center">
                         <div
-                          className="w-6 h-6 mr-3 rounded-md border-2 border-blue-400 shadow-sm"
+                          className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 rounded-md border-2 border-blue-400 shadow-sm"
                           style={{ backgroundColor: terrain.color }}
                         />
-                        <div>
-                          <div className="text-blue-100 font-medium">{terrain.name}</div>
-                          <div className="text-xs text-blue-300">
+                        <div className="max-w-[120px] sm:max-w-none">
+                          <div className="text-blue-100 font-medium text-sm sm:text-base">{terrain.name}</div>
+                          <div className="text-xs text-blue-300 hidden xs:block">
                             ({terrain.resource} / {terrain.rareResource} / {terrain.epicResource})
                           </div>
                         </div>
@@ -1176,14 +1180,14 @@ export default function PixelMapGame() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-b from-blue-900 to-indigo-900 p-6 rounded-xl border-2 border-blue-700 shadow-2xl mt-6 mb-6">
+        <div className="bg-gradient-to-b from-blue-900 to-indigo-900 p-4 sm:p-6 rounded-xl border-2 border-blue-700 shadow-2xl mt-6 mb-6">
           {/* Tab buttons with modern styling */}
-          <div className="flex space-x-3 mb-6 p-1 bg-blue-800/30 rounded-lg">
+          <div className="flex space-x-2 sm:space-x-3 mb-4 sm:mb-6 p-1 bg-blue-800/30 rounded-lg">
             {(["inventory", "crafting", "selling"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2 rounded-md text-sm font-medium transition-all duration-200 flex-1 ${
+                className={`px-3 sm:px-5 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex-1 ${
                   activeTab === tab
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                     : "bg-blue-900/50 text-blue-200 hover:bg-blue-800/70"
@@ -1195,43 +1199,43 @@ export default function PixelMapGame() {
           </div>
 
           {/* Gold display with coin icon */}
-          <div className="mb-6 p-3 bg-gradient-to-r from-yellow-600 to-yellow-500 border-2 border-yellow-400 rounded-lg text-center shadow-md flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mb-4 sm:mb-6 p-2 sm:p-3 bg-gradient-to-r from-yellow-600 to-yellow-500 border-2 border-yellow-400 rounded-lg text-center shadow-md flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="font-bold text-yellow-100 text-lg">Gold: {gold}</span>
+            <span className="font-bold text-yellow-100 text-base sm:text-lg">Gold: {gold}</span>
           </div>
 
           {/* Inventory tab */}
           {activeTab === "inventory" && (
             <>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-blue-100 flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="flex justify-between items-center mb-3 sm:mb-4">
+                <h2 className="text-lg sm:text-xl font-bold text-blue-100 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                   Inventory
                 </h2>
                 <button
                   onClick={resetInventory}
-                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors"
+                  className="text-xs sm:text-sm bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-md flex items-center gap-1 transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                   Reset
                 </button>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3">
                 {Object.entries(inventory)
                   .filter(([_, count]) => count > 0)
                   .map(([resource, count]) => (
                     <div
                       key={resource}
-                      className="bg-blue-800/40 backdrop-blur-sm rounded-lg p-3 border border-blue-600/30 hover:border-blue-500 transition-all hover:scale-105 flex flex-col items-center justify-center shadow-md"
+                      className="bg-blue-800/40 backdrop-blur-sm rounded-lg p-2 sm:p-3 border border-blue-600/30 hover:border-blue-500 transition-all hover:scale-105 flex flex-col items-center justify-center shadow-md"
                     >
-                      <span className="text-blue-200 text-sm">{resource}</span>
-                      <span className="font-bold text-white mt-1">{count}</span>
+                      <span className="text-blue-200 text-xs sm:text-sm truncate w-full text-center">{resource}</span>
+                      <span className="font-bold text-white mt-1 text-sm sm:text-base">{count}</span>
                     </div>
                   ))}
               </div>
@@ -1241,13 +1245,13 @@ export default function PixelMapGame() {
           {/* Crafting tab */}
           {activeTab === "crafting" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-100 mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <h2 className="text-lg sm:text-xl font-bold text-blue-100 mb-3 sm:mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                 </svg>
                 Crafting
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {CRAFTING_RECIPES.filter(recipe => {
                   return Object.entries(recipe.inputs).every(
                     ([resource, required]) => 
@@ -1256,31 +1260,31 @@ export default function PixelMapGame() {
                 }).map((recipe, idx) => (
                   <div
                     key={idx}
-                    className="bg-blue-800/40 backdrop-blur-sm p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all shadow-md"
+                    className="bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all shadow-md"
                   >
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-2 sm:mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-blue-100 font-medium">{recipe.output}</span>
+                        <span className="text-blue-100 font-medium text-sm sm:text-base">{recipe.output}</span>
                       </div>
                       <span className="bg-blue-700 text-blue-100 text-xs px-2 py-1 rounded-full">
                         x{recipe.amount}
                       </span>
                     </div>
                     
-                    <div className="flex items-center justify-between text-sm mb-4">
-                      <div className="text-blue-300 flex items-center gap-1">
+                    <div className="flex flex-wrap items-center justify-between text-xs sm:text-sm mb-3 sm:mb-4 gap-1">
+                      <div className="text-blue-300 flex flex-wrap items-center gap-1">
                         {Object.entries(recipe.inputs).map(([res, qty]) => (
-                          <span key={res} className="bg-blue-900/70 px-2 py-1 rounded-md">
+                          <span key={res} className="bg-blue-900/70 px-2 py-1 rounded-md whitespace-nowrap">
                             {res} ×{qty}
                           </span>
                         ))}
                       </div>
-                      <span className="text-blue-200">→</span>
+                      <span className="text-blue-200 hidden sm:inline">→</span>
                     </div>
                     
                     <button
                       onClick={() => craftItem(recipe, inventory, setInventory)}
-                      className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white py-2 rounded-md text-sm font-medium transition-all shadow-md hover:shadow-lg"
+                      className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white py-2 rounded-md text-xs sm:text-sm font-medium transition-all shadow-md hover:shadow-lg"
                     >
                       Craft
                     </button>
@@ -1293,13 +1297,13 @@ export default function PixelMapGame() {
           {/* Selling tab */}
           {activeTab === "selling" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-100 mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <h2 className="text-lg sm:text-xl font-bold text-blue-100 mb-3 sm:mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 Sell Items
               </h2>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-2 sm:gap-3">
                 {Object.entries(inventory)
                   .filter(([item, count]) => count > 0 && ITEM_VALUES[item as keyof Inventory] !== undefined)
                   .map(([item, count]) => {
@@ -1308,34 +1312,36 @@ export default function PixelMapGame() {
                     return (
                       <div
                         key={item}
-                        className="bg-blue-800/40 backdrop-blur-sm p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex items-center justify-between shadow-md"
+                        className="bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex flex-col sm:flex-row items-center justify-between shadow-md gap-2"
                       >
                         {/* Left side: Item info */}
-                        <div className="flex items-center gap-3">
-                          <div className="flex flex-col">
-                            <span className="font-bold text-white">{item}</span>
-                            <span className="text-blue-200 text-sm">Stock: {count}</span>
-                            <span className="text-yellow-300 text-sm">Value: {value} gold each</span>
+                        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                          <div className="flex flex-col min-w-0 flex-1">
+                            <span className="font-bold text-white text-sm sm:text-base truncate">{item}</span>
+                            <div className="flex justify-between text-xs sm:text-sm">
+                              <span className="text-blue-200">Stock: {count}</span>
+                              <span className="text-yellow-300">Value: {value} gold</span>
+                            </div>
                           </div>
                         </div>
 
                         {/* Right side: Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-2">
+                        <div className="flex flex-row sm:flex-col md:flex-row gap-1 sm:gap-2 w-full sm:w-auto justify-end">
                           <button
                             onClick={() => sellItem(item as keyof Inventory, 1)}
-                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
                           >
                             Sell 1
                           </button>
                           <button
                             onClick={() => sellItem(item as keyof Inventory, 5)}
-                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
                           >
                             Sell 5
                           </button>
                           <button
                             onClick={() => sellItem(item as keyof Inventory, count)}
-                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-md transition-colors shadow-sm"
+                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm flex-1 sm:flex-none"
                           >
                             Sell All
                           </button>
@@ -1347,7 +1353,6 @@ export default function PixelMapGame() {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
