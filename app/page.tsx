@@ -2,7 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-type TerrainType = 'tree' | 'volcano' | 'water' | 'sand' | 'mountain' | 'grass' | 'cave' | 'swamp';
+type TerrainType =
+| "tree"
+| "volcano"
+| "water"
+| "sand"
+| "mountain"
+| "grass"
+| "cave"
+| "swamp";
 
 interface Terrain {
   name: string;
@@ -113,7 +121,6 @@ interface Recipe {
 
 // Define item values for selling
 const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
-  // Basic Resources
   Wood: 1,
   Stone: 2,
   Copper: 3,
@@ -172,10 +179,6 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   DiamondPickaxe: 60,
   ObsidianBlade: 45,
   CrystalWand: 40,
-  Bow: 25,
-  Arrow: 2,
-  Waterskin: 10,
-  Spyglass: 35,
   DiamondRing: 75,
   PearlNecklace: 65,
   RubyPendant: 70,
@@ -192,6 +195,10 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   ReinforcedWindow: 40,
   WoodenChest: 20,
   MetalChest: 45,
+  Bow: 25,
+  Arrow: 2,
+  Waterskin: 10,
+  Spyglass: 35,
 };
 
 const CRAFTING_RECIPES: Recipe[] = [
@@ -1189,37 +1196,52 @@ export default function PixelMapGame() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-b from-blue-900 to-indigo-900 p-4 sm:p-6 rounded-xl border-2 border-blue-700 shadow-2xl mt-6 mb-6">
-          {/* Gold display with coin icon */}
-          <div className="mb-4 sm:mb-6 p-2 sm:p-3 bg-gradient-to-r from-yellow-600 to-yellow-500 border-2 border-yellow-400 rounded-lg text-center shadow-md flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="font-bold text-yellow-100 text-base sm:text-lg">Gold: {gold}</span>
-          </div>
+        <div className="relative bg-gradient-to-b from-blue-950/95 to-indigo-950/95 p-6 sm:p-8 rounded-3xl border border-blue-500/40 shadow-[0_0_40px_rgba(0,0,80,0.6)] mt-8 mb-8 backdrop-blur-md overflow-hidden">
 
-          {/* Header with title and reset button */}
-          <div className="flex justify-between items-center mb-3 sm:mb-4">
-            <h2 className="text-lg sm:text-xl font-bold text-blue-100 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-              Inventory
-            </h2>
+          {/* Subtle glow overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-indigo-700/10 pointer-events-none"></div>
+
+          {/* Gold display */}
+          <div className="mb-8 p-4 bg-gradient-to-r from-yellow-700 to-amber-600 rounded-2xl border border-amber-400/60 shadow-[0_0_25px_rgba(255,200,50,0.4)] flex items-center justify-between relative overflow-hidden">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-yellow-500/30 rounded-full shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 sm:h-8 sm:w-8 text-yellow-300 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-yellow-200 text-sm font-semibold uppercase tracking-wide">Currency</p>
+                <p className="font-extrabold text-yellow-100 text-2xl sm:text-3xl drop-shadow">{gold} G</p>
+              </div>
+            </div>
             <button
               onClick={resetInventory}
-              className="text-xs sm:text-sm bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-md flex items-center gap-1 transition-colors"
+              className="text-sm bg-red-700/80 hover:bg-red-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-lg"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9" />
               </svg>
               Reset
             </button>
           </div>
 
-          {/* Inventory list with sell and craft buttons */}
-          <div className="grid grid-cols-1 gap-2 sm:gap-3">
-            {/* First show items that are in inventory */}
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8 pb-3 border-b border-blue-700/50">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-4 tracking-wide">
+              <div className="p-3 bg-blue-700/40 rounded-xl shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-300 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4" />
+                </svg>
+              </div>
+              Inventory
+            </h2>
+            <div className="text-blue-200 text-sm bg-blue-900/40 px-4 py-1 rounded-full border border-blue-600/40 shadow-inner">
+              {Object.values(inventory).reduce((sum, count) => sum + count, 0)} items
+            </div>
+          </div>
+
+          {/* Inventory grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pr-2">
             {Object.entries(inventory)
               .filter(([_, count]) => count > 0)
               .map(([resource, count]) => {
@@ -1229,59 +1251,91 @@ export default function PixelMapGame() {
                   ([inputResource, required]) => 
                     (inventory[inputResource as keyof Inventory] || 0) >= required
                 );
-                
+
                 return (
                   <div
                     key={resource}
-                    className="group bg-blue-800/40 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/30 hover:border-blue-500 transition-all flex items-center justify-between shadow-md gap-2"
+                    className="relative bg-gradient-to-b from-blue-800/60 to-blue-900/80 backdrop-blur p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(50,100,255,0.25)] hover:shadow-[0_0_25px_rgba(80,150,255,0.5)] transition-all"
                   >
-                    {/* Left side: Item info */}
-                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                      <div className="flex flex-col min-w-0 flex-1">
-                        <span className="font-bold text-white text-sm sm:text-base truncate">{resource}</span>
-                        <div className="flex flex-col xs:flex-row justify-between gap-1 xs:gap-2 text-xs sm:text-sm">
-                          <span className="text-blue-200">Stock: {count}</span>
-                          {value > 0 && <span className="text-yellow-300">Value: {value} gold</span>}
-                        </div>
-                        {/* Recipe display */}
-                        {recipe && (
-                          <div className="mt-1 text-xs text-blue-300">
-                            Recipe: {Object.entries(recipe.inputs).map(([res, qty]) => `${res}×${qty}`).join(' + ')}
-                          </div>
-                        )}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="font-extrabold text-white text-xl mb-1 tracking-wide">{resource}</h3>
+                        <p className="text-blue-200 text-sm">Stock: <span className="font-mono text-white">{count}</span></p>
                       </div>
+                      {value > 0 && (
+                        <div className="text-amber-300 text-sm font-semibold bg-amber-700/30 px-3 py-1 rounded-xl shadow-inner">
+                          Value {value}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Right side: Buttons */}
-                    <div className="flex flex-col gap-1 sm:gap-2 ml-2">
-                      
-                      {/* Sell buttons - Only show if item has value */}
+                    {/* Show recipe OR location */}
+                    {recipe ? (
+                      <div className="mb-4 p-3 bg-blue-950/40 rounded-xl border border-blue-700/40">
+                        <p className="text-blue-300 text-xs font-semibold mb-2 uppercase tracking-wider">Recipe</p>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(recipe.inputs).map(([res, qty]) => (
+                            <span
+                              key={res}
+                              className="text-xs bg-blue-800/50 text-blue-200 px-2 py-1 rounded-lg border border-blue-600/30"
+                            >
+                              {res}×{qty}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (() => {
+                      // Compute terrain inside IIFE
+                      const terrain = Object.values(TERRAIN_TYPES).find(
+                        t =>
+                          t.resource === resource ||
+                          t.rareResource === resource ||
+                          t.epicResource === resource
+                      );
+
+                      return terrain ? (
+                        <div className="mb-4 p-3 bg-green-950/30 rounded-xl border border-green-700/40">
+                          <p className="text-green-300 text-xs font-semibold mb-2 uppercase tracking-wider">
+                            Found In
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="text-xs font-medium px-3 py-1 rounded-lg"
+                              style={{
+                                backgroundColor: terrain.color + "40",
+                                color: terrain.color,
+                                border: `1px solid ${terrain.color}80`
+                              }}
+                            >
+                              {terrain.name}
+                            </span>
+                          </div>
+                        </div>
+                      ) : null;
+                    })()}
+
+
+                    <div className="flex gap-3">
                       {value > 0 && (
-                        <div className="flex flex-col gap-1 sm:gap-2">
+                        <>
                           <button
                             onClick={() => sellItem(resource as keyof Inventory, 1)}
-                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
+                            className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg font-semibold transition-all shadow hover:scale-105"
                           >
                             Sell 1
                           </button>
                           <button
                             onClick={() => sellItem(resource as keyof Inventory, count)}
-                            className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
+                            className="flex-1 bg-amber-600 hover:bg-amber-500 text-white py-2 rounded-lg font-semibold transition-all shadow hover:scale-105"
                           >
                             Sell All
                           </button>
-                        </div>
+                        </>
                       )}
-                      
-                      {/* Craft button - Only show if item can be crafted */}
                       {canCraft && (
                         <button
-                          onClick={() => {
-                            if (recipe) {
-                              craftItem(recipe, inventory, setInventory);
-                            }
-                          }}
-                          className="text-xs bg-green-600 hover:bg-green-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
+                          onClick={() => recipe && craftItem(recipe, inventory, setInventory)}
+                          className="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-semibold transition-all shadow hover:scale-105"
                         >
                           Craft
                         </button>
@@ -1290,54 +1344,6 @@ export default function PixelMapGame() {
                   </div>
                 );
               })}
-            
-            {/* Then show craftable items that are not in inventory (count = 0) */}
-            {CRAFTING_RECIPES.map(recipe => {
-              const resource = recipe.output;
-              const count = inventory[resource as keyof Inventory] || 0;
-              
-              // Skip if already shown above (count > 0)
-              if (count > 0) return null;
-              
-              const canCraft = Object.entries(recipe.inputs).every(
-                ([inputResource, required]) => 
-                  (inventory[inputResource as keyof Inventory] || 0) >= required
-              );
-              
-              // Only show if craftable
-              if (!canCraft) return null;
-              
-              return (
-                <div
-                  key={resource}
-                  className="group bg-blue-800/20 backdrop-blur-sm p-3 sm:p-4 rounded-xl border border-blue-600/20 hover:border-blue-500 transition-all flex items-center justify-between shadow-md gap-2"
-                >
-                  {/* Left side: Item info */}
-                  <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                    <div className="flex flex-col min-w-0 flex-1">
-                      <span className="font-bold text-blue-200 text-sm sm:text-base truncate">{resource}</span>
-                      <div className="flex flex-col xs:flex-row justify-between gap-1 xs:gap-2 text-xs sm:text-sm">
-                        <span className="text-blue-300">Stock: 0</span>
-                      </div>
-                      {/* Recipe display */}
-                      <div className="mt-1 text-xs text-blue-300">
-                        Recipe: {Object.entries(recipe.inputs).map(([res, qty]) => `${res}×${qty}`).join(' + ')}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right side: Craft button */}
-                  <div className="flex flex-col gap-1 sm:gap-2 ml-2">
-                    <button
-                      onClick={() => craftItem(recipe, inventory, setInventory)}
-                      className="text-xs bg-green-600 hover:bg-green-500 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md transition-colors shadow-sm w-full min-w-[70px]"
-                    >
-                      Craft
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
 
