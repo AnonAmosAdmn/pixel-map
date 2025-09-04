@@ -112,6 +112,55 @@ interface Inventory {
   Waterskin: number;
   EnchantedScroll: number;
   Spyglass: number;
+  FishSandwich: number;
+  MushroomSoup: number;
+  FrogBites: number;
+  StickyPotion: number;
+  SweetPotion: number;
+  SwampPotion: number;
+  GemBrooch: number;
+  PearlBracelet: number;
+  CoralRing: number;
+  EmeraldNecklace: number;
+  CopperSword: number;
+  SilverDagger: number;
+  RubySword: number;
+  EmeraldAxe: number;
+  GemKnife: number;
+  StickyGlue: number;
+  OceanCharm: number;
+  SwampCharm: number;
+  VolcanicCharm: number;
+  CrystalCharm: number;
+  GlassTable: number;
+  WoodenChair: number;
+  StoneStool: number;
+  MetalLantern: number;
+  GemmedCandle: number;
+  CrystalVase: number;
+  CoralDisplay: number;
+  PearlFrame: number;
+  EmeraldCarving: number;
+  RubySculpture: number;
+  DiamondPrism: number;
+  ObsidianPickaxe: number;
+  FlamingSword: number;
+  NatureWand: number;
+  OceanDagger: number;
+  CrystalBow: number;
+  CoralFishingRod: number;
+  EternalTorch: number;
+  Spellbook: number;
+  CrystalBall: number;
+  NatureAmulet: number;
+  FireAmulet: number;
+  WaterAmulet: number;
+  LightAmulet: number;
+  HerbalTea: number;
+  SwampStew: number;
+  Sushi: number;
+  HoneyBread: number;
+  MagicJam: number;
 }
 
 interface PixelCooldown {
@@ -206,13 +255,67 @@ const ITEM_VALUES: Partial<Record<keyof Inventory, number>> = {
   Arrow: 2,
   Waterskin: 10,
   Spyglass: 35,
+  FishSandwich: 8,
+  MushroomSoup: 7,
+  FrogBites: 6,
+  StickyPotion: 18,
+  SweetPotion: 15,
+  SwampPotion: 20,
+  GemBrooch: 45,
+  PearlBracelet: 40,
+  CoralRing: 35,
+  EmeraldNecklace: 50,
+  CopperSword: 20,
+  SilverDagger: 25,
+  RubySword: 45,
+  EmeraldAxe: 40,
+  GemKnife: 30,
+  StickyGlue: 5,
+  OceanCharm: 25,
+  SwampCharm: 22,
+  VolcanicCharm: 28,
+  CrystalCharm: 30,
+  GlassTable: 35,
+  WoodenChair: 15,
+  StoneStool: 12,
+  MetalLantern: 20,
+  GemmedCandle: 25,
+  CrystalVase: 30,
+  CoralDisplay: 28,
+  PearlFrame: 32,
+  EmeraldCarving: 40,
+  RubySculpture: 42,
+  DiamondPrism: 60,
+  ObsidianPickaxe: 70,
+  FlamingSword: 65,
+  NatureWand: 55,
+  OceanDagger: 50,
+  CrystalBow: 45,
+  CoralFishingRod: 40,
+  EternalTorch: 35,
+  Spellbook: 80,
+  CrystalBall: 75,
+  NatureAmulet: 65,
+  FireAmulet: 68,
+  WaterAmulet: 62,
+  LightAmulet: 70,
+  HerbalTea: 8,
+  SwampStew: 12,
+  Sushi: 15,
+  HoneyBread: 10,
+  MagicJam: 20,
 };
 
 const CRAFTING_RECIPES: Recipe[] = [
+  // Basic Tools
   { inputs: { Wood: 2, Stone: 1 }, output: "Pickaxe", amount: 1 },
   { inputs: { Wood: 1, Stone: 1 }, output: "Axe", amount: 1 },
   { inputs: { Wood: 2, Iron: 1 }, output: "FishingRod", amount: 1 },
   { inputs: { Wood: 3, Resin: 2 }, output: "Torch", amount: 4 },
+  { inputs: { Wood: 3, Resin: 1 }, output: "Bow", amount: 1 },
+  { inputs: { Stone: 1, Wood: 1, Resin: 1 }, output: "Arrow", amount: 6 },
+  
+  // Basic Materials
   { inputs: { Wood: 4 }, output: "Planks", amount: 4 },
   { inputs: { Stone: 2 }, output: "StoneBricks", amount: 1 },
   { inputs: { Copper: 3, Coal: 1 }, output: "CopperIngot", amount: 1 },
@@ -225,44 +328,109 @@ const CRAFTING_RECIPES: Recipe[] = [
   { inputs: { Emerald: 1 }, output: "PolishedEmerald", amount: 1 },
   { inputs: { Crystal: 2 }, output: "CrystalShard", amount: 4 },
   { inputs: { Gem: 3 }, output: "GemCluster", amount: 1 },
+  
+  // Food Items
   { inputs: { Wheat: 3 }, output: "Bread", amount: 1 },
   { inputs: { Fish: 1, Herbs: 1 }, output: "CookedFish", amount: 1 },
   { inputs: { Mushrooms: 2, Herbs: 1 }, output: "Stew", amount: 1 },
   { inputs: { Honey: 2, Herbs: 1 }, output: "HealingSyrup", amount: 1 },
   { inputs: { Wheat: 1, Honey: 1 }, output: "HoneyCake", amount: 2 },
   { inputs: { Frogs: 2, Herbs: 1 }, output: "FrogLegs", amount: 2 },
+  { inputs: { Fish: 1, Wheat: 1 }, output: "FishSandwich", amount: 1 },
+  { inputs: { Mushrooms: 2, Wheat: 1 }, output: "MushroomSoup", amount: 1 },
+  { inputs: { Frogs: 1, Wheat: 1 }, output: "FrogBites", amount: 2 },
+  
+  // Potions
   { inputs: { Mushrooms: 2, Crystal: 1 }, output: "ManaPotion", amount: 1 },
   { inputs: { Honey: 1, Resin: 1, Herbs: 1 }, output: "StaminaPotion", amount: 1 },
   { inputs: { Coral: 1, Pearl: 1 }, output: "WaterBreathingPotion", amount: 1 },
   { inputs: { Emerald: 1, Moss: 2 }, output: "InvisibilityPotion", amount: 1 },
   { inputs: { Ruby: 1, Coal: 2 }, output: "FireResistancePotion", amount: 1 },
+  { inputs: { HealingSyrup: 1, Herbs: 2 }, output: "HealingPotion", amount: 1 },
+  { inputs: { CrystalShard: 1, Moss: 2 }, output: "JumpBoostPotion", amount: 1 },
+  { inputs: { Resin: 2, Herbs: 1 }, output: "StickyPotion", amount: 1 },
+  { inputs: { Honey: 2, Crystal: 1 }, output: "SweetPotion", amount: 1 },
+  { inputs: { Moss: 2, Mushrooms: 1 }, output: "SwampPotion", amount: 1 },
+  
+  // Jewelry
   { inputs: { GoldIngot: 2, Diamond: 1 }, output: "DiamondRing", amount: 1 },
   { inputs: { SilverIngot: 2, Pearl: 1 }, output: "PearlNecklace", amount: 1 },
   { inputs: { GoldIngot: 1, Ruby: 1 }, output: "RubyPendant", amount: 1 },
   { inputs: { SilverIngot: 1, Emerald: 1 }, output: "EmeraldEarring", amount: 2 },
+  { inputs: { Coral: 3, SilverIngot: 1 }, output: "CoralCirclet", amount: 1 },
+  { inputs: { GoldIngot: 1, Gem: 2 }, output: "GemBrooch", amount: 1 },
+  { inputs: { SilverIngot: 1, Pearl: 2 }, output: "PearlBracelet", amount: 1 },
+  { inputs: { GoldIngot: 2, Coral: 2 }, output: "CoralRing", amount: 1 },
+  { inputs: { SilverIngot: 1, Emerald: 2 }, output: "EmeraldNecklace", amount: 1 },
+  
+  // Weapons & Tools
   { inputs: { IronIngot: 2, Wood: 2 }, output: "IronSword", amount: 1 },
   { inputs: { GoldIngot: 2, Wood: 1 }, output: "GoldDagger", amount: 1 },
   { inputs: { Diamond: 1, IronIngot: 2 }, output: "DiamondPickaxe", amount: 1 },
   { inputs: { ObsidianShard: 2, IronIngot: 1 }, output: "ObsidianBlade", amount: 1 },
   { inputs: { CrystalShard: 3, SilverIngot: 1 }, output: "CrystalWand", amount: 1 },
+  { inputs: { CopperIngot: 2, Wood: 2 }, output: "CopperSword", amount: 1 },
+  { inputs: { SilverIngot: 2, Wood: 1 }, output: "SilverDagger", amount: 1 },
+  { inputs: { Ruby: 1, IronIngot: 2 }, output: "RubySword", amount: 1 },
+  { inputs: { Emerald: 1, IronIngot: 2 }, output: "EmeraldAxe", amount: 1 },
+  { inputs: { Gem: 2, Wood: 2 }, output: "GemKnife", amount: 1 },
+  
+  // Special Items
   { inputs: { Pearl: 3, Coral: 2, GoldIngot: 1 }, output: "OceanAmulet", amount: 1 },
   { inputs: { Emerald: 2, Moss: 3, Wood: 2 }, output: "ForestTalisman", amount: 1 },
   { inputs: { Ruby: 2, Coal: 3, IronIngot: 2 }, output: "VolcanicGauntlet", amount: 1 },
   { inputs: { Diamond: 3, Crystal: 2, GoldIngot: 3 }, output: "RoyalScepter", amount: 1 },
   { inputs: { GemCluster: 1, SilverIngot: 2, Resin: 2 }, output: "ArtisanLens", amount: 1 },
+  { inputs: { CrystalShard: 1, Gem: 2 }, output: "EnchantedScroll", amount: 1 },
+  { inputs: { Glass: 1, GoldIngot: 1 }, output: "Spyglass", amount: 1 },
+  { inputs: { Moss: 2, Resin: 1 }, output: "Waterskin", amount: 1 },
+  { inputs: { Honey: 2, Resin: 1 }, output: "StickyGlue", amount: 2 },
+  { inputs: { Coral: 2, Pearl: 1 }, output: "OceanCharm", amount: 1 },
+  { inputs: { Emerald: 1, Moss: 1 }, output: "SwampCharm", amount: 1 },
+  { inputs: { Ruby: 1, Coal: 1 }, output: "VolcanicCharm", amount: 1 },
+  { inputs: { Diamond: 1, Crystal: 1 }, output: "CrystalCharm", amount: 1 },
+  
+  // Storage & Furniture
   { inputs: { Planks: 4 }, output: "CraftingTable", amount: 1 },
   { inputs: { StoneBricks: 8 }, output: "StoneFurnace", amount: 1 },
   { inputs: { IronIngot: 5, Glass: 3 }, output: "ReinforcedWindow", amount: 1 },
   { inputs: { Wood: 3, Resin: 1 }, output: "WoodenChest", amount: 1 },
   { inputs: { IronIngot: 4, GoldIngot: 1 }, output: "MetalChest", amount: 1 },
-  { inputs: { Glass: 1, GoldIngot: 1 }, output: "Spyglass", amount: 1 },
-  { inputs: { HealingSyrup: 1, Herbs: 2 }, output: "HealingPotion", amount: 1 },
-  { inputs: { CrystalShard: 1, Moss: 2 }, output: "JumpBoostPotion", amount: 1 },
-  { inputs: { Coral: 3, SilverIngot: 1 }, output: "CoralCirclet", amount: 1 },
-  { inputs: { Wood: 3, Resin: 1 }, output: "Bow", amount: 1 },
-  { inputs: { Stone: 1, Wood: 1, Resin: 1 }, output: "Arrow", amount: 6 },
-  { inputs: { Moss: 2, Resin: 1 }, output: "Waterskin", amount: 1 },
-  { inputs: { CrystalShard: 1, Gem: 2 }, output: "EnchantedScroll", amount: 1 },
+  { inputs: { StoneBricks: 4, Glass: 2 }, output: "GlassTable", amount: 1 },
+  { inputs: { Wood: 4, Resin: 2 }, output: "WoodenChair", amount: 1 },
+  { inputs: { Stone: 4, Coal: 1 }, output: "StoneStool", amount: 1 },
+  { inputs: { IronIngot: 3, Glass: 1 }, output: "MetalLantern", amount: 1 },
+  
+  // Decorative Items
+  { inputs: { Gem: 1, GoldIngot: 1 }, output: "GemmedCandle", amount: 1 },
+  { inputs: { Crystal: 1, SilverIngot: 1 }, output: "CrystalVase", amount: 1 },
+  { inputs: { Coral: 2, Glass: 1 }, output: "CoralDisplay", amount: 1 },
+  { inputs: { Pearl: 2, GoldIngot: 1 }, output: "PearlFrame", amount: 1 },
+  { inputs: { Emerald: 1, Wood: 2 }, output: "EmeraldCarving", amount: 1 },
+  { inputs: { Ruby: 1, Stone: 2 }, output: "RubySculpture", amount: 1 },
+  { inputs: { Diamond: 1, Glass: 2 }, output: "DiamondPrism", amount: 1 },
+  
+  // Advanced Equipment
+  { inputs: { DiamondPickaxe: 1, ObsidianShard: 3 }, output: "ObsidianPickaxe", amount: 1 },
+  { inputs: { IronSword: 1, Ruby: 2 }, output: "FlamingSword", amount: 1 },
+  { inputs: { CrystalWand: 1, Emerald: 2 }, output: "NatureWand", amount: 1 },
+  { inputs: { GoldDagger: 1, Pearl: 2 }, output: "OceanDagger", amount: 1 },
+  { inputs: { Bow: 1, CrystalShard: 3 }, output: "CrystalBow", amount: 1 },
+  { inputs: { FishingRod: 1, Coral: 2 }, output: "CoralFishingRod", amount: 1 },
+  { inputs: { Torch: 4, Resin: 3 }, output: "EternalTorch", amount: 1 },
+  
+  // Magical Items
+  { inputs: { EnchantedScroll: 1, GemCluster: 1 }, output: "Spellbook", amount: 1 },
+  { inputs: { CrystalShard: 5, GoldIngot: 2 }, output: "CrystalBall", amount: 1 },
+  { inputs: { Emerald: 2, Moss: 3 }, output: "NatureAmulet", amount: 1 },
+  { inputs: { Ruby: 2, Coal: 3 }, output: "FireAmulet", amount: 1 },
+  { inputs: { Pearl: 2, Coral: 3 }, output: "WaterAmulet", amount: 1 },
+  { inputs: { Diamond: 2, Crystal: 3 }, output: "LightAmulet", amount: 1 },
+  
+  // Consumable Items
+  { inputs: { Herbs: 2, Honey: 1 }, output: "HerbalTea", amount: 2 },
+  { inputs: { Mushrooms: 3, Frogs: 1 }, output: "SwampStew", amount: 1 },
+  { inputs: { Wheat: 2, Honey: 1 }, output: "HoneyBread", amount: 2 },
 ];
 
 const TERRAIN_TYPES: Record<TerrainType, Terrain> = {
@@ -443,7 +611,225 @@ const INITIAL_INVENTORY: Inventory = {
   Arrow: 0,
   Waterskin: 0,
   EnchantedScroll: 0,
-  Spyglass: 0
+  Spyglass: 0,
+  FishSandwich: 0,
+  MushroomSoup: 0,
+  FrogBites: 0,
+  StickyPotion: 0,
+  SweetPotion: 0,
+  SwampPotion: 0,
+  GemBrooch: 0,
+  PearlBracelet: 0,
+  CoralRing: 0,
+  EmeraldNecklace: 0,
+  CopperSword: 0,
+  SilverDagger: 0,
+  RubySword: 0,
+  EmeraldAxe: 0,
+  GemKnife: 0,
+  StickyGlue: 0,
+  OceanCharm: 0,
+  SwampCharm: 0,
+  VolcanicCharm: 0,
+  CrystalCharm: 0,
+  GlassTable: 0,
+  WoodenChair: 0,
+  StoneStool: 0,
+  MetalLantern: 0,
+  GemmedCandle: 0,
+  CrystalVase: 0,
+  CoralDisplay: 0,
+  PearlFrame: 0,
+  EmeraldCarving: 0,
+  RubySculpture: 0,
+  DiamondPrism: 0,
+  ObsidianPickaxe: 0,
+  FlamingSword: 0,
+  NatureWand: 0,
+  OceanDagger: 0,
+  CrystalBow: 0,
+  CoralFishingRod: 0,
+  EternalTorch: 0,
+  Spellbook: 0,
+  CrystalBall: 0,
+  NatureAmulet: 0,
+  FireAmulet: 0,
+  WaterAmulet: 0,
+  LightAmulet: 0,
+  HerbalTea: 0,
+  SwampStew: 0,
+  Sushi: 0,
+  HoneyBread: 0,
+  MagicJam: 0,
+};
+
+// Define emojis for all items
+const ITEM_EMOJIS: Partial<Record<keyof Inventory, string>> = {
+  // ===== BASIC RAW RESOURCES =====
+  // Forest resources
+  Wood: "🪵",
+  Honey: "🍯",
+  Resin: "🟤",
+  
+  // Volcano resources
+  Obsidian: "🌋",
+  Ruby: "🔴",
+  Diamond: "💎",
+  
+  // Water resources
+  Fish: "🐟",
+  Pearl: "⚪",
+  Coral: "🪸",
+  
+  // Sand resources
+  Glass: "🔍",
+  Silver: "🥈",
+  Gold: "🥇",
+  
+  // Mountain resources
+  Stone: "🪨",
+  Iron: "🪙",
+  Gem: "💠",
+  
+  // Grass resources
+  Wheat: "🌾",
+  Herbs: "🌿",
+  Copper: "🔶",
+  
+  // Cave resources
+  Coal: "⛏️",
+  Emerald: "💚",
+  Crystal: "🔮",
+  
+  // Swamp resources
+  Moss: "🍃",
+  Mushrooms: "🍄",
+  Frogs: "🐸",
+  
+  // ===== PROCESSED MATERIALS =====
+  Planks: "🪵",
+  StoneBricks: "🧱",
+  CopperIngot: "🔶",
+  IronIngot: "🪙",
+  GoldIngot: "💰",
+  SilverIngot: "🥈",
+  ObsidianShard: "🌋",
+  PolishedDiamond: "💎",
+  PolishedRuby: "🔴",
+  PolishedEmerald: "💚",
+  CrystalShard: "🔮",
+  GemCluster: "💠",
+  
+  // ===== TOOLS =====
+  Pickaxe: "⛏️",
+  Axe: "🪓",
+  FishingRod: "🎣",
+  Torch: "🔦",
+  Bow: "🏹",
+  Spyglass: "🔭",
+  
+  // ===== WEAPONS =====
+  IronSword: "⚔️",
+  GoldDagger: "🗡️",
+  DiamondPickaxe: "⛏️",
+  ObsidianBlade: "🔪",
+  CopperSword: "⚔️",
+  SilverDagger: "🗡️",
+  RubySword: "⚔️",
+  EmeraldAxe: "🪓",
+  GemKnife: "🔪",
+  FlamingSword: "🔥",
+  OceanDagger: "🗡️",
+  CrystalBow: "🏹",
+  CoralFishingRod: "🎣",
+  
+  // ===== FOOD ITEMS =====
+  Bread: "🍞",
+  CookedFish: "🐟",
+  Stew: "🍲",
+  HealingSyrup: "🍯",
+  HoneyCake: "🍰",
+  FrogLegs: "🍗",
+  FishSandwich: "🥪",
+  MushroomSoup: "🍄",
+  FrogBites: "🍖",
+  Sushi: "🍣",
+  HoneyBread: "🍞",
+  HerbalTea: "🍵",
+  SwampStew: "🍲",
+  MagicJam: "🍯",
+  
+  // ===== POTIONS =====
+  HealingPotion: "❤️",
+  ManaPotion: "🔵",
+  StaminaPotion: "💚",
+  WaterBreathingPotion: "🌊",
+  InvisibilityPotion: "👻",
+  FireResistancePotion: "🔥",
+  JumpBoostPotion: "🦘",
+  StickyPotion: "🟤",
+  SweetPotion: "🍯",
+  SwampPotion: "🐸",
+  
+  // ===== JEWELRY =====
+  DiamondRing: "💍",
+  PearlNecklace: "📿",
+  RubyPendant: "📿",
+  EmeraldEarring: "📿",
+  CoralCirclet: "👑",
+  GemBrooch: "📌",
+  PearlBracelet: "📿",
+  CoralRing: "💍",
+  EmeraldNecklace: "📿",
+  
+  // ===== MAGICAL ITEMS =====
+  CrystalWand: "🪄",
+  OceanAmulet: "🧿",
+  ForestTalisman: "🧿",
+  VolcanicGauntlet: "🧤",
+  RoyalScepter: "🪄",
+  ArtisanLens: "🔍",
+  EnchantedScroll: "📜",
+  OceanCharm: "🧿",
+  SwampCharm: "🧿",
+  VolcanicCharm: "🧿",
+  CrystalCharm: "🧿",
+  Spellbook: "📖",
+  CrystalBall: "🔮",
+  NatureAmulet: "🧿",
+  FireAmulet: "🧿",
+  WaterAmulet: "🧿",
+  LightAmulet: "🧿",
+  
+  // ===== CRAFTING STATIONS =====
+  CraftingTable: "🛠️",
+  StoneFurnace: "🔥",
+  
+  // ===== STORAGE =====
+  WoodenChest: "📦",
+  MetalChest: "🗃️",
+  
+  // ===== BUILDING & FURNITURE =====
+  ReinforcedWindow: "🪟",
+  GlassTable: "🪑",
+  WoodenChair: "🪑",
+  StoneStool: "🪑",
+  MetalLantern: "🏮",
+  GemmedCandle: "🕯️",
+  CrystalVase: "🏺",
+  CoralDisplay: "🐠",
+  PearlFrame: "🖼️",
+  EmeraldCarving: "🗿",
+  RubySculpture: "🗿",
+  DiamondPrism: "🔶",
+  
+  // ===== MISC ITEMS =====
+  Arrow: "🏹",
+  Waterskin: "💧",
+  StickyGlue: "🧴",
+  EternalTorch: "🔦",
+  ObsidianPickaxe: "⛏️",
+  NatureWand: "🪄",
 };
 
 // Improved cellular automata function for terrain generation
@@ -910,9 +1296,78 @@ export default function PixelMapGame() {
     }
   };
 
-  // Generate a new map with balanced terrain features
-  const generateMap = () => {
+  // Mountain ranges with occasional volcanoes
+  function createMountainRange(map: string[][], length: number) {
+    const h = map.length;
+    const w = map[0].length;
+    let x = Math.floor(Math.random() * w);
+    let y = Math.floor(Math.random() * h);
 
+    for (let i = 0; i < length; i++) {
+      if (x >= 0 && x < w && y >= 0 && y < h) {
+        map[y][x] = Math.random() < 0.05 ? "volcano" : "mountain";
+      }
+      // Step along a noisy direction
+      x += Math.floor(Math.random() * 3) - 1;
+      y += Math.floor(Math.random() * 3) - 1;
+    }
+    return map;
+  }
+
+  // Add caves + stone next to mountain/volcano clusters
+  function addCavesAndStone(map: string[][]) {
+    const h = map.length;
+    const w = map[0].length;
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (map[y][x] === "mountain" || map[y][x] === "volcano") {
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              const ny = y + dy;
+              const nx = x + dx;
+              if (ny >= 0 && ny < h && nx >= 0 && nx < w) {
+                if (map[ny][nx] === "grass") {
+                  if (Math.random() < 0.1) map[ny][nx] = "cave";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return map;
+  }
+
+  // Beaches hugging water tiles tightly
+  function generateBeaches(map: string[][]) {
+    const h = map.length;
+    const w = map[0].length;
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (map[y][x] === "grass") {
+          let nearWater = false;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              const ny = y + dy;
+              const nx = x + dx;
+              if (ny >= 0 && ny < h && nx >= 0 && nx < w) {
+                if (map[ny][nx] === "water") nearWater = true;
+              }
+            }
+          }
+          if (nearWater && Math.random() > 0.3) {
+            map[y][x] = "sand";
+          }
+        }
+      }
+    }
+    return map;
+  }
+
+  // --- Main Map Generation ---
+  const generateMap = () => {
     // Check if player has enough gold (only after first map)
     if (hasGeneratedFirstMap && gold < 100) {
       alert("You need 100 gold to generate a new map!");
@@ -920,93 +1375,51 @@ export default function PixelMapGame() {
     }
 
     setIsGenerating(true);
-  
-    // Deduct the gold cost (only after first map)
+
+    // Deduct gold or mark first map
     if (hasGeneratedFirstMap) {
-      setGold(prev => prev - 100);
+      setGold((prev) => prev - 100);
     } else {
       setHasGeneratedFirstMap(true);
     }
-  
-    // Set the generation timestamp
+
+    // Set generation timestamp
     const generationTime = Date.now();
     setLastMapGeneration(generationTime);
-    
+
     // Create a 32x32 grid with all grass
     let newPixels = Array(32)
       .fill(null)
-      .map(() => Array(32).fill('grass'));
-    
-      // Add seeds for different terrain types with better balance
-      newPixels = createSeeds(newPixels, 'water', 3);
-      newPixels = createSeeds(newPixels, 'mountain', 8);
-      newPixels = createSeeds(newPixels, 'tree', 12);
-      newPixels = createSeeds(newPixels, 'volcano', 4);
-      newPixels = createSeeds(newPixels, 'sand', 6);
-      newPixels = createSeeds(newPixels, 'cave', 5);
-      newPixels = createSeeds(newPixels, 'swamp', 7);
-    
-    // Apply cellular automata to create grouped terrain
-  
-    // Create rivers (less aggressive)
+      .map(() => Array(32).fill("grass"));
+
+    // Add initial seeds for water/trees/swamp etc
+    newPixels = createSeeds(newPixels, "water", 3);
+    newPixels = createSeeds(newPixels, "tree", 12);
+    newPixels = createSeeds(newPixels, "swamp", 7);
+
+    // Create rivers
     newPixels = createRivers(newPixels);
-    
-    // Expand water with higher threshold to limit expansion
-    newPixels = generateTerrain(newPixels, 'water', 3, 2);
-    
-    // Mountains should form chains
-    newPixels = generateTerrain(newPixels, 'mountain', 5, 3);
-    
-    // Trees should form forests
-    newPixels = generateTerrain(newPixels, 'tree', 4, 2);
-    
-    // Volcano should form smaller areas
-    newPixels = generateTerrain(newPixels, 'volcano', 3, 2);
-    
-    // Caves should form near mountains
-    newPixels = generateTerrain(newPixels, 'cave', 3, 2);
-    
-    // Swamps should form near water
-    newPixels = generateTerrain(newPixels, 'swamp', 3, 2);
-    
-    // Sand should form beaches near water
-    const height = newPixels.length;
-    const width = newPixels[0].length;
-    const waterAdjacent = Array(height).fill(null).map(() => Array(width).fill(false));
-    
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        if (newPixels[y][x] === 'water') {
-          for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-              const ny = y + dy;
-              const nx = x + dx;
-              if (ny >= 0 && ny < height && nx >= 0 && nx < width) {
-                waterAdjacent[ny][nx] = true;
-              }
-            }
-          }
-        }
-      }
+
+    // Expand terrains
+    newPixels = generateTerrain(newPixels, "water", 3, 2);
+    newPixels = generateTerrain(newPixels, "tree", 4, 2);
+    newPixels = generateTerrain(newPixels, "swamp", 3, 2);
+
+    // --- NEW RULES ---
+    // Generate mountain ridges with volcano clusters
+    for (let i = 0; i < 3; i++) {
+      newPixels = createMountainRange(newPixels, 15);
     }
-    
-    // Convert grass to sand near water with higher probability
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        if (waterAdjacent[y][x] && newPixels[y][x] === 'grass' && Math.random() > 0.3) {
-          newPixels[y][x] = 'sand';
-        }
-      }
-    }
-    
-    // Expand sand a bit
-    newPixels = generateTerrain(newPixels, 'sand', 2, 2);
-    
-    // Reset terrain counts when generating a new map
-    setTerrainCounts(prev => {
+
+    // Add caves + stone near mountains
+    newPixels = addCavesAndStone(newPixels);
+
+    // Generate beaches around coastlines
+    newPixels = generateBeaches(newPixels);
+
+    // Reset terrain counts
+    setTerrainCounts((prev) => {
       const newCounts = { ...prev };
-      
-      // Reset only the count, maxCollection, collected, and rareCollected for each terrain type
       for (const key in newCounts) {
         const terrainType = key as TerrainType;
         newCounts[terrainType] = {
@@ -1014,21 +1427,21 @@ export default function PixelMapGame() {
           count: 0,
           maxCollection: 0,
           collected: 0,
-          rareCollected: 0
+          rareCollected: 0,
         };
       }
-      
       return newCounts;
     });
-    
-    // Clear all pixel cooldowns when generating a new map
+
+    // Reset cooldowns
     setPixelCooldowns([]);
-    
+
     setPixels(newPixels);
-    
-    // Simulate a short delay for visual feedback
+
+    // Simulate a short delay
     setTimeout(() => setIsGenerating(false), 300);
   };
+
 
   const handleExport = () => {
     const canvas = document.createElement('canvas');
@@ -1280,6 +1693,7 @@ export default function PixelMapGame() {
                   ([inputResource, required]) => 
                     (inventory[inputResource as keyof Inventory] || 0) >= required
                 );
+                const emoji = ITEM_EMOJIS[resource as keyof Inventory] || "📦";
 
                 return (
                   <div
@@ -1287,8 +1701,11 @@ export default function PixelMapGame() {
                     className="relative bg-gradient-to-b from-blue-800/60 to-blue-900/80 backdrop-blur p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(50,100,255,0.25)] hover:shadow-[0_0_25px_rgba(80,150,255,0.5)] transition-all"
                   >
                     <div className="flex flex-col mb-4">
-                      {/* Resource Name */}
-                      <h3 className="font-extrabold text-white text-xl mb-2 tracking-wide">{resource}</h3>
+                      {/* Resource Name with Emoji */}
+                      <h3 className="font-extrabold text-white text-xl mb-2 tracking-wide flex items-center gap-2">
+                        <span className="text-2xl">{emoji}</span>
+                        {resource}
+                      </h3>
 
                       {/* Stock and Value in a row */}
                       <div className="flex items-center justify-between mb-3">
@@ -1380,6 +1797,7 @@ export default function PixelMapGame() {
             {CRAFTING_RECIPES.map(recipe => {
               const resource = recipe.output;
               const count = inventory[resource as keyof Inventory] || 0;
+              const emoji = ITEM_EMOJIS[resource as keyof Inventory] || "📦";
 
               // Skip if already owned
               if (count > 0) return null;
@@ -1399,8 +1817,10 @@ export default function PixelMapGame() {
                 >
                   {/* Resource Info */}
                   <div className="flex flex-col mb-4">
-                    <h3 className="font-extrabold text-white text-xl mb-2 tracking-wide">{resource}</h3>
-
+                    <h3 className="font-extrabold text-white text-xl mb-2 tracking-wide flex items-center gap-2">
+                      <span className="text-2xl">{emoji}</span>
+                      {resource}
+                    </h3>
                     {/* Stock */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 bg-blue-600 px-3 py-1 rounded-xl shadow-inner">
