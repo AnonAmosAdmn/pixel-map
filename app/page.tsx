@@ -25,6 +25,13 @@ interface Terrain {
   maxCollection: number;
 }
 
+interface SavedMapState {
+  pixels: TerrainType[][];
+  terrainCounts: Record<TerrainType, Terrain>;
+  pixelCooldowns: PixelCooldown[];
+  lastGenerated: number; // timestamp to prevent cheating by refreshing
+}
+
 interface Inventory {
   Wood: number;
   Obsidian: number;
@@ -586,27 +593,26 @@ export default function PixelMapGame() {
   const [activeTab, setActiveTab] = useState<"inventory" | "crafting" | "selling">("inventory");
   const [gold, setGold] = useState(0);
   const [hasGeneratedFirstMap, setHasGeneratedFirstMap] = useState(false);
+  const [lastMapGeneration, setLastMapGeneration] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Load inventory and gold from localStorage on component mount
+
+  // Load map state from localStorage on component mount
   useEffect(() => {
     const savedInventory = localStorage.getItem('pixelMapInventory');
     const savedGold = localStorage.getItem('pixelMapGold');
+    const savedMap = localStorage.getItem('pixelMapState');
     
     if (savedInventory) {
       try {
         const parsedInventory = JSON.parse(savedInventory);
-        
-        // Ensure all inventory fields exist, including rare resources
         const completeInventory: Inventory = {
-          ...INITIAL_INVENTORY, // Start with default values
-          ...parsedInventory,   // Override with saved values
+          ...INITIAL_INVENTORY,
+          ...parsedInventory,
         };
-        
         setInventory(completeInventory);
       } catch (e) {
         console.error('Failed to parse saved inventory:', e);
-        // If parsing fails, use initial inventory
         setInventory(INITIAL_INVENTORY);
       }
     }
@@ -619,18 +625,49 @@ export default function PixelMapGame() {
         setGold(0);
       }
     }
+
+    if (savedMap) {
+      try {
+        const parsedMap: SavedMapState = JSON.parse(savedMap);
+        
+        // Check if the map was generated recently (within the last minute)
+        const now = Date.now();
+        if (now - parsedMap.lastGenerated < 60000) {
+          // Load the saved map
+          setPixels(parsedMap.pixels);
+          setTerrainCounts(parsedMap.terrainCounts);
+          setPixelCooldowns(parsedMap.pixelCooldowns);
+          setLastMapGeneration(parsedMap.lastGenerated);
+          setHasGeneratedFirstMap(true);
+          return; // Skip generating a new map
+        }
+      } catch (e) {
+        console.error('Failed to parse saved map:', e);
+      }
+    }
+    
+    // If no valid saved map, generate a new one
+    generateMap();
   }, []);
+
+  // Save map state to localStorage whenever it changes
+  useEffect(() => {
+    if (pixels.length > 0) {
+      const mapState: SavedMapState = {
+        pixels,
+        terrainCounts,
+        pixelCooldowns,
+        lastGenerated: lastMapGeneration
+      };
+      localStorage.setItem('pixelMapState', JSON.stringify(mapState));
+    }
+  }, [pixels, terrainCounts, pixelCooldowns, lastMapGeneration]);
 
   // Save inventory and gold to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('pixelMapInventory', JSON.stringify(inventory));
     localStorage.setItem('pixelMapGold', gold.toString());
   }, [inventory, gold]);
-
-  // Initialize the pixel grid
-  useEffect(() => {
-    generateMap();
-  }, []);
 
   // Check for cooldown completion
   useEffect(() => {
@@ -890,6 +927,10 @@ export default function PixelMapGame() {
     } else {
       setHasGeneratedFirstMap(true);
     }
+  
+    // Set the generation timestamp
+    const generationTime = Date.now();
+    setLastMapGeneration(generationTime);
     
     // Create a 32x32 grid with all grass
     let newPixels = Array(32)
@@ -1097,8 +1138,6 @@ export default function PixelMapGame() {
           <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent mb-2">
             Pixel Harvester
           </h1>
-          <p className="text-blue-200 text-sm sm:text-base mb-1">Click on terrain to collect resources!</p>
-          <p className="text-blue-200 text-sm sm:text-base mb-4 md:mb-6">Each pixel has a 5-minute cooldown.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
@@ -1201,10 +1240,19 @@ export default function PixelMapGame() {
           {/* Subtle glow overlay */}
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 via-transparent to-indigo-700/10 pointer-events-none"></div>
 
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8 pb-3 border-b border-blue-700/50">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-4 tracking-wide">
+              Inventory
+            </h2>
+            <div className="text-blue-200 text-sm bg-blue-900/40 px-4 py-1 rounded-full border border-blue-600/40 shadow-inner">
+              {Object.values(inventory).reduce((sum, count) => sum + count, 0)} items
+            </div>
+          </div>
+
           {/* Gold display */}
           <div className="mb-8 p-4 bg-gradient-to-r from-yellow-700 to-amber-600 rounded-2xl border border-amber-400/60 shadow-[0_0_25px_rgba(255,200,50,0.4)] flex items-center justify-between relative overflow-hidden">
             <div className="flex items-center gap-4">
-
               <div>
                 <p className="text-yellow-200 text-sm font-semibold uppercase tracking-wide">Currency</p>
                 <p className="font-extrabold text-yellow-100 text-2xl sm:text-3xl drop-shadow">{gold} G</p>
@@ -1219,16 +1267,6 @@ export default function PixelMapGame() {
               </svg>
               Reset
             </button>
-          </div>
-
-          {/* Header */}
-          <div className="flex justify-between items-center mb-8 pb-3 border-b border-blue-700/50">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-4 tracking-wide">
-              Inventory
-            </h2>
-            <div className="text-blue-200 text-sm bg-blue-900/40 px-4 py-1 rounded-full border border-blue-600/40 shadow-inner">
-              {Object.values(inventory).reduce((sum, count) => sum + count, 0)} items
-            </div>
           </div>
 
           {/* Inventory grid */}
@@ -1388,7 +1426,7 @@ export default function PixelMapGame() {
                         ))}
                       </div>
                     </div>
-                  </div>s
+                  </div>
 
                   {/* Action Button */}
                   <div className="flex gap-3">
