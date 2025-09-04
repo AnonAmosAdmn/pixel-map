@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
-
+import { useToast } from '../components/Toast';
 type TerrainType =
 | "tree"
 | "volcano"
@@ -832,6 +832,7 @@ const ITEM_EMOJIS: Partial<Record<keyof Inventory, string>> = {
   NatureWand: "🪄",
 };
 
+
 // Improved cellular automata function for terrain generation
 const generateTerrain = (grid: TerrainType[][], targetTerrain: TerrainType, iterations: number, threshold: number): TerrainType[][] => {
   const newGrid = JSON.parse(JSON.stringify(grid));
@@ -981,7 +982,8 @@ export default function PixelMapGame() {
   const [hasGeneratedFirstMap, setHasGeneratedFirstMap] = useState(false);
   const [lastMapGeneration, setLastMapGeneration] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  const { addToast, ToastContainer } = useToast();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   // Load map state from localStorage on component mount
   useEffect(() => {
@@ -1293,6 +1295,10 @@ export default function PixelMapGame() {
         ...prev,
         [resourceType]: prev[resourceType] + 1
       }));
+      
+      // Show collection toast
+      const rarity = isEpic ? "Epic" : isRare ? "Rare" : "Common";
+      addToast(`Collected ${rarity} ${resourceType} from ${TERRAIN_TYPES[terrainType].name}`, "success");
     }
   };
 
@@ -1370,7 +1376,7 @@ export default function PixelMapGame() {
   const generateMap = () => {
     // Check if player has enough gold (only after first map)
     if (hasGeneratedFirstMap && gold < 100) {
-      alert("You need 100 gold to generate a new map!");
+      addToast("You need 100 gold to generate a new map!", "error");
       return;
     }
 
@@ -1478,10 +1484,10 @@ export default function PixelMapGame() {
 
   // Reset inventory
   const resetInventory = () => {
-    if (confirm('Are you sure you want to reset your inventory? This cannot be undone.')) {
-      setInventory(INITIAL_INVENTORY);
-      setGold(0);
-    }
+    setInventory(INITIAL_INVENTORY);
+    setGold(0);
+    addToast("Inventory has been reset", "info");
+    setShowResetConfirm(false);
   };
 
   // Check if a specific pixel is on cooldown
@@ -1491,15 +1497,16 @@ export default function PixelMapGame() {
     );
   };
 
-  function craftItem(
+  // Craft item function with toast support
+  const craftItem = (
     recipe: Recipe,
     inventory: Inventory,
     setInventory: (inv: Inventory) => void
-  ) {
+  ) => {
     // Check requirements
     for (const [resource, required] of Object.entries(recipe.inputs)) {
       if ((inventory[resource as keyof Inventory] || 0) < required) {
-        alert(`Not enough ${resource} to craft ${recipe.output}`);
+        addToast(`Not enough ${resource} to craft ${recipe.output}`, "error");
         return;
       }
     }
@@ -1515,19 +1522,20 @@ export default function PixelMapGame() {
       (newInventory[recipe.output] || 0) + recipe.amount;
 
     setInventory(newInventory);
-  }
+    addToast(`Crafted ${recipe.amount}x ${recipe.output}!`, "success");
+  };
 
   // Sell items for gold
   const sellItem = (item: keyof Inventory, amount: number) => {
     const value = ITEM_VALUES[item] || 0;
     
     if (value === 0) {
-      alert("This item cannot be sold.");
+      addToast("This item cannot be sold.", "error");
       return;
     }
     
     if (inventory[item] < amount) {
-      alert(`You don't have enough ${item} to sell.`);
+      addToast(`You don't have enough ${item} to sell.`, "error");
       return;
     }
     
@@ -1540,7 +1548,7 @@ export default function PixelMapGame() {
     
     setGold(prev => prev + totalValue);
     
-    alert(`Sold ${amount}x ${item} for ${totalValue} gold!`);
+    addToast(`Sold ${amount}x ${item} for ${totalValue} gold!`, "success");
   };
 
   return (
@@ -1647,6 +1655,30 @@ export default function PixelMapGame() {
             </div>
           </div>
         </div>
+        
+        <ToastContainer />
+        {showResetConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-blue-900 p-6 rounded-xl border border-blue-700">
+              <h3 className="text-white text-xl mb-4">Confirm Reset</h3>
+              <p className="text-blue-200 mb-6">Are you sure you want to reset your inventory? This cannot be undone.</p>
+              <div className="flex gap-4 justify-end">
+                <button 
+                  onClick={() => setShowResetConfirm(false)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={resetInventory}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="relative bg-gradient-to-b from-blue-950/95 to-indigo-950/95 p-6 sm:p-8 rounded-3xl border border-blue-500/40 shadow-[0_0_40px_rgba(0,0,80,0.6)] mb-8 backdrop-blur-md overflow-hidden">
 
@@ -1672,7 +1704,7 @@ export default function PixelMapGame() {
               </div>
             </div>
             <button
-              onClick={resetInventory}
+              onClick={() => setShowResetConfirm(true)}
               className="text-sm bg-red-700/80 hover:bg-red-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-lg"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1849,7 +1881,7 @@ export default function PixelMapGame() {
                   <div className="flex gap-3">
                     {canCraft && (
                       <button
-                        onClick={() => craftItem(recipe, inventory, setInventory)}
+                        onClick={() => recipe && craftItem(recipe, inventory, setInventory)}
                         className="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-semibold transition-all shadow hover:scale-105"
                       >
                         Craft
