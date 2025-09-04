@@ -1293,26 +1293,23 @@ export default function PixelMapGame() {
                       {/* Stock and Value in a row */}
                       <div className="flex items-center justify-between mb-3">
                         {/* Stock */}
-                        <div className="flex items-center gap-2 bg-blue-800/40 px-3 py-1 rounded-xl shadow-inner">
-                          <span className="text-blue-200 text-sm font-medium">Stock:</span>
+                        <div className="flex items-center gap-2 bg-blue-600 px-3 py-1 rounded-xl shadow-inner">
+                          <span className="text-white text-sm font-medium">Stock : </span>
                           <span className="font-mono text-white text-sm">{count}</span>
                         </div>
 
                         {/* Value */}
                         {value > 0 && (
                           <div className="flex items-center gap-1 bg-amber-700/30 px-3 py-1 rounded-xl shadow-inner">
-                            <svg className="h-4 w-4 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 12h-2v-2h2v2zm0-4h-2V6h2v4z" />
-                            </svg>
-                            <span className="text-amber-300 text-sm font-semibold">Value {value}</span>
+                            <span className="text-amber-300 text-sm font-semibold">Value : {value}</span>
                           </div>
                         )}
                       </div>
 
                       {/* Show recipe OR location */}
                       {recipe ? (
-                        <div className="mb-4 p-3 bg-blue-950/40 rounded-xl border border-blue-700/40">
-                          <p className="text-blue-300 text-xs font-semibold mb-2 uppercase tracking-wider">Recipe</p>
+                        <div className="p-3 bg-blue-950/40 rounded-xl border border-blue-700/40">
+                          <p className="text-white text-xs font-semibold mb-2 uppercase tracking-wider">Recipe : </p>
                           <div className="flex flex-wrap gap-2">
                             {Object.entries(recipe.inputs).map(([res, qty]) => (
                               <span
@@ -1329,8 +1326,8 @@ export default function PixelMapGame() {
                           t => t.resource === resource || t.rareResource === resource || t.epicResource === resource
                         );
                         return terrain ? (
-                          <div className="mb-4 p-3 bg-green-950/30 rounded-xl border border-green-700/40">
-                            <p className="text-green-300 text-xs font-semibold mb-2 uppercase tracking-wider">Found In</p>
+                          <div className="p-3 bg-green-950/30 rounded-xl border border-green-700/40">
+                            <p className="text-white text-xs font-semibold mb-2 uppercase tracking-wider">Location : </p>
                             <div className="flex items-center gap-2">
                               <span
                                 className="text-xs font-medium px-3 py-1 rounded-lg"
@@ -1406,15 +1403,15 @@ export default function PixelMapGame() {
 
                     {/* Stock */}
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2 bg-blue-800/40 px-3 py-1 rounded-xl shadow-inner">
-                        <span className="text-blue-200 text-sm font-medium">Stock:</span>
+                      <div className="flex items-center gap-2 bg-blue-600 px-3 py-1 rounded-xl shadow-inner">
+                        <span className="text-white text-sm font-medium">Stock : </span>
                         <span className="font-mono text-white text-sm">{count}</span>
                       </div>
                     </div>
 
                     {/* Recipe */}
-                    <div className="mb-4 p-3 bg-blue-950/40 rounded-xl border border-blue-700/40">
-                      <p className="text-blue-300 text-xs font-semibold mb-2 uppercase tracking-wider">Recipe</p>
+                    <div className="p-3 bg-blue-950/40 rounded-xl border border-blue-700/40">
+                      <p className="text-white text-xs font-semibold mb-2 uppercase tracking-wider">Recipe : </p>
                       <div className="flex flex-wrap gap-2">
                         {Object.entries(recipe.inputs).map(([res, qty]) => (
                           <span
