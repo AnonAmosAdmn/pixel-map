@@ -1547,7 +1547,7 @@ export default function PixelMapGame() {
     }));
     
     setGold(prev => prev + totalValue);
-    
+
     addToast(`Sold ${amount}x ${item} for ${totalValue} gold!`, "success");
   };
 

@@ -24,7 +24,7 @@ const Toast = ({ message, type = 'info', duration = 3000, onClose, className }: 
 
   return (
     <div
-      className={`w-full ${bgColor} text-white px-4 py-2 rounded-md shadow-lg transition-opacity opacity-100 ${className ?? ''}`}
+      className={`w-full ${bgColor} text-white px-4 py-4 rounded-md shadow-lg transition-opacity opacity-100 ${className ?? ''}`}
     >
       {message}
     </div>
