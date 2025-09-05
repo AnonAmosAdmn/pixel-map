@@ -1554,9 +1554,11 @@ export default function PixelMapGame() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto bg-gradient-to-b from-blue-800 to-blue-900 rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 border-2 border-blue-700">
-        {/* Header */}
         <div className="text-center mb-6 md:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-600 to-amber-500 bg-clip-text text-transparent mb-2 
+                          drop-shadow-[0_0_15px_rgba(255,204,0,0.7)] 
+                          hover:drop-shadow-[0_0_20px_rgba(255,204,0,0.9)] hover:scale-105 
+                          transition-all duration-500">
             Pixel Harvester
           </h1>
         </div>
@@ -1655,7 +1657,7 @@ export default function PixelMapGame() {
             </div>
           </div>
         </div>
-        
+
         <ToastContainer />
         {showResetConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
