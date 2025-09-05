@@ -1659,6 +1659,7 @@ export default function PixelMapGame() {
         </div>
 
         <ToastContainer />
+
         {showResetConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-blue-900 p-6 rounded-xl border border-blue-700">

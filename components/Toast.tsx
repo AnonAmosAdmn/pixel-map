@@ -7,9 +7,10 @@ interface ToastProps {
   type?: 'success' | 'error' | 'info';
   duration?: number;
   onClose: () => void;
+  className?: string;
 }
 
-const Toast = ({ message, type = 'info', duration = 3000, onClose }: ToastProps) => {
+const Toast = ({ message, type = 'info', duration = 3000, onClose, className }: ToastProps) => {
   useEffect(() => {
     const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
@@ -22,7 +23,9 @@ const Toast = ({ message, type = 'info', duration = 3000, onClose }: ToastProps)
   }[type];
 
   return (
-    <div className={`fixed top-4 right-4 ${bgColor} text-white px-4 py-2 rounded-md shadow-lg z-50 transition-opacity opacity-100`}>
+    <div
+      className={`w-full ${bgColor} text-white px-4 py-2 rounded-md shadow-lg transition-opacity opacity-100 ${className ?? ''}`}
+    >
       {message}
     </div>
   );
@@ -48,14 +51,16 @@ export const useToast = () => {
   };
 
   const ToastContainer = () => (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed top-4 inset-x-0 z-50 space-y-2 px-4">
       {toasts.map(toast => (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          onClose={() => removeToast(toast.id)}
-        />
+        <div key={toast.id} className="w-full max-w-2xl mx-auto">
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+            className="text-center"
+          />
+        </div>
       ))}
     </div>
   );
